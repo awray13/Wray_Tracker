@@ -163,7 +163,7 @@
                         <img src="~/Images/user.svg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">@User.Identity.Name</a>
+                        <a href="@Url.Action("About", "Home")" class="d-block">@User.Identity.Name</a>
                     </div>
                 </div>
 
@@ -182,26 +182,37 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./index.html" class="nav-link">
+                                    <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v1</p>
+                                        <p>My Dashboard</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Roles</p>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <li class="nav-item">
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Log Out</p>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                </ul>
                         </li>
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a href="pages/widgets.html" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
@@ -695,7 +706,7 @@
                                 <i class="nav-icon far fa-circle text-info"></i>
                                 <p>Informational</p>
                             </a>
-                        </li>
+                        </li>*@
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

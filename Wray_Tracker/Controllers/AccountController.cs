@@ -18,6 +18,7 @@ namespace Wray_Tracker.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        
         public AccountController()
         {
         }
@@ -457,7 +458,7 @@ namespace Wray_Tracker.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

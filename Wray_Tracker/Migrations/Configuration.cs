@@ -17,6 +17,7 @@ namespace Wray_Tracker.Migrations
 
         protected override void Seed(Wray_Tracker.Models.ApplicationDbContext context)
         {
+            #region Create roles
             var roleManager = new RoleManager<IdentityRole>(
                                 new RoleStore<IdentityRole>(context));
 
@@ -39,6 +40,7 @@ namespace Wray_Tracker.Migrations
             {
                 roleManager.Create(new IdentityRole { Name = "Submitter" });
             }
+            #endregion
 
             #region Add Users and Assign Roles
 

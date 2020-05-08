@@ -1,0 +1,70 @@
+﻿@using Wray_Tracker.ViewModels
+@model IEnumerable<UserRoleData>
+
+@{
+    ViewBag.Title = "Manage Roles";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container-fluid">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            @* Left column that holds the users *@
+            <div class="col">
+                @Html.ListBox("UserIds")
+            </div>
+
+            @* Right column for holding my Roles *@
+            <div class="col">
+                @Html.DropDownList("RoleName", "- Select Role -")
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary" style="">Manage Roles</button>
+
+            </div>
+
+        </div>
+    }
+
+    <hr />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+        </tr>
+
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => user.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => user.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => user.RoleName)
+                </td>
+            </tr>
+        }
+
+
+     </table>
+</div>
+
