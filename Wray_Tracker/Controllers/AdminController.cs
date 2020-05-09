@@ -19,18 +19,21 @@ namespace Wray_Tracker.Controllers
         // GET: Admin
         public ActionResult ManageRoles()
         {
-            var viewData = new List<UserRoleData>();
+            var viewData = new List<CustomUserData>();
 
             var users = db.Users.ToList();
 
             foreach (var user in users)
             {
-                var newUserData = new UserRoleData();
+                var newUserData = new CustomUserData();
 
                 newUserData.FirstName = user.FirstName;
                 newUserData.LastName = user.LastName;
                 newUserData.Email = user.Email;
                 newUserData.RoleName = userRoleHelper.ListUserRoles(user.Id).FirstOrDefault() ?? "UnAssigned";
+
+                viewData.Add(newUserData);
+
             }
 
             // Right hand side control: This data will be used to power a Dropdown List in the View
@@ -39,7 +42,7 @@ namespace Wray_Tracker.Controllers
             // Left hand side control: This data will be used to power ListBox in the View
             ViewBag.UserIds = new MultiSelectList(db.Users, "Id", "Email");
 
-            return View();
+            return View(viewData);
         }
 
         [HttpPost]
@@ -60,7 +63,7 @@ namespace Wray_Tracker.Controllers
                         userRoleHelper.RemoveUserFromRole(userId, userRole);
                     }
 
-                    if (!string.IsNullOrEmpty(userRole))
+                    if (!string.IsNullOrEmpty(roleName))
                     {
                         // Then I will add each selected user to the selected Role
                         userRoleHelper.AddUserToRole(userId, roleName);

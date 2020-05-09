@@ -22,6 +22,7 @@ namespace Wray_Tracker.Models
         {
             get
             {
+                // string interpelation
                 return $"{LastName}, {FirstName}";
             }
         }

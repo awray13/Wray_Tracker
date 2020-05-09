@@ -200,7 +200,8 @@
     <Compile Include="Models\TicketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\UserRoleData.cs" />
+    <Compile Include="ViewModels\CustomUserData.cs" />
+    <Compile Include="ViewModels\EmailModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\adminlte.css" />
@@ -211,6 +212,8 @@
     <Content Include="Content\brands.min.css" />
     <Content Include="Content\Chart.css" />
     <Content Include="Content\Chart.min.css" />
+    <Content Include="Content\dataTables.bootstrap4.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\fontawesome.css" />
     <Content Include="Content\fontawesome.min.css" />
     <Content Include="Content\icheck-bootstrap.css" />
@@ -219,6 +222,8 @@
     <Content Include="Content\OverlayScrollbars.min.css" />
     <Content Include="Content\regular.css" />
     <Content Include="Content\regular.min.css" />
+    <Content Include="Content\responsive.bootstrap4.css" />
+    <Content Include="Content\responsive.bootstrap4.min.css" />
     <Content Include="Content\solid.css" />
     <Content Include="Content\solid.min.css" />
     <Content Include="Content\svg-with-js.css" />
@@ -260,7 +265,13 @@
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\core.js" />
     <Content Include="Scripts\dashboard2.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\dataTables.responsive.js" />
+    <Content Include="Scripts\dataTables.responsive.min.js" />
     <Content Include="Scripts\demo.js" />
+    <Content Include="Scripts\jquery.dataTables.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.mapael.js" />
     <Content Include="Scripts\jquery.mapael.min.js" />
@@ -274,6 +285,8 @@
     <Content Include="Scripts\OverlayScrollbars.min.js" />
     <Content Include="Scripts\raphael.js" />
     <Content Include="Scripts\raphael.min.js" />
+    <Content Include="Scripts\responsive.bootstrap4.js" />
+    <Content Include="Scripts\responsive.bootstrap4.min.js" />
     <Content Include="Scripts\usa_states.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -366,6 +379,9 @@
     <None Include="packages.config" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Admin\ManageRoles.cshtml" />
+    <Content Include="Views\Projects\ManageProjectAssignments.cshtml" />
+    <Content Include="Views\Projects\ManageProjectLevelUsers.cshtml" />
+    <Content Include="Smtp.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

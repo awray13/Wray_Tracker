@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Wray_Tracker.ViewModels.CustomUserData>
 @{
-    ViewBag.Title = "Manage Roles";
+    ViewBag.Title = "ManageProjectAssignments";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,25 +10,30 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
+       
 
         <div class="row">
             @* Left column that holds the users *@
             <div class="col">
-                @Html.ListBox("UserIds")
+                <select multiple class="form-group">
+                    <option>@Html.ListBox("UserIds")</option>
+                </select>
             </div>
 
             @* Right column for holding my Roles *@
-            <div class="col">
-                @Html.DropDownList("RoleName", "- Select Role -")
-            </div>
+        <div class="col">
+            <select class="form-group">
+                <option>@Html.DropDownList("ProjectIds")</option>
+            </select>
+        </div>
         </div>
         <br />
         <div class="row">
             <div class="col">
-                <button type="submit" class="btn btn-primary" style="">Manage Roles</button>
+                <button type="submit" class="btn btn-dark" style="">Manage Project Assignments</button>
             </div>
         </div>
-     }
+    }
 
     <hr />
 
@@ -42,7 +47,7 @@
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RoleName)
+                    @Html.DisplayName("Projects")
                 </th>
             </tr>
         </thead>
@@ -57,12 +62,16 @@
                         @Html.DisplayFor(model => user.Email)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => user.RoleName)
+                        @foreach (var projName in user.ProjectNames)
+                        {
+                            @projName
+                            <br />
+                        }
                     </td>
                 </tr>
             }
-
         </tbody>
-     </table>
-</div>
 
+
+    </table>
+</div>
