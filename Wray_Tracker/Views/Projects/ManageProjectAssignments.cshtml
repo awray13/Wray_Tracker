@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Wray_Tracker.ViewModels.CustomUserData>
 @{
     ViewBag.Title = "ManageProjectAssignments";
+
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,22 +11,18 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-       
+
 
         <div class="row">
             @* Left column that holds the users *@
             <div class="col">
-                <select multiple class="form-group">
-                    <option>@Html.ListBox("UserIds")</option>
-                </select>
+                  @Html.ListBox("UserIds")
             </div>
 
             @* Right column for holding my Roles *@
-        <div class="col">
-            <select class="form-group">
-                <option>@Html.DropDownList("ProjectIds")</option>
-            </select>
-        </div>
+            <div class="col">
+                @Html.DropDownList("ProjectIds")
+            </div>
         </div>
         <br />
         <div class="row">

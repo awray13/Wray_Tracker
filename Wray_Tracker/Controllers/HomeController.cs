@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Wray_Tracker.Helper;
 using Wray_Tracker.Models;
 using Wray_Tracker.ViewModels;
 
@@ -15,6 +16,7 @@ namespace Wray_Tracker.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private UserProjectHelper projHelper = new UserProjectHelper();
         public ActionResult Index()
         {
             return View();
@@ -27,9 +29,31 @@ namespace Wray_Tracker.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            var emptyCustomUserDataList = new List<CustomUserData>();
+            // I have decided that it should work this way...
+            var users = db.Users.ToList();
 
-            return View();
+            // Load up a Multi Select List of Users
+            ViewBag.UserIds = new MultiSelectList(users, "Id", "FullName");
+
+            // Load up a Multi Select List Of Projects
+            ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name");
+
+            // Load up the View Model
+            foreach (var user in users)
+            {
+                emptyCustomUserDataList.Add(new CustomUserData
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    ProjectNames = projHelper.ListUserProjects(user.Id).Select(p => p.Name).ToList()
+                });
+            }
+
+            return View(emptyCustomUserDataList);
+
+            
         }
 
         public ActionResult Contact()
