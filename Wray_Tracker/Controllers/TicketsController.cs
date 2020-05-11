@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Wray_Tracker.Helper;
 using Wray_Tracker.Models;
 
 namespace Wray_Tracker.Controllers
@@ -13,6 +15,7 @@ namespace Wray_Tracker.Controllers
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private UserProjectHelper projHelper = new UserProjectHelper();
 
         // GET: Tickets
         public ActionResult Index()
@@ -37,12 +40,31 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Tickets/Create
-        public ActionResult Create()
+        [Authorize(Roles = "Submitter")]
+        public ActionResult Create(int? projectId)
         {
             ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+
+            // I need to somehow produce a list of only my Projects and then put that list into the SelectList
+            var myUserId = User.Identity.GetUserId();
+            var myProjects = projHelper.ListUserProjects(myUserId);
+
+            if (projectId == null)
+            {
+                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            }
+
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
+            ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
+
+            var newTicket = new Ticket();
+            if (projectId != null)
+                newTicket.ProjectId = (int)projectId;
+
+            return View(newTicket);
         }
 
         // POST: Tickets/Create
@@ -50,18 +72,35 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPropertyId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                ticket.SubmitterId = User.Identity.GetUserId();
+                ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t => t.Name == "New").Id;
+                ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName", ticket.SubmitterId);
+            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName");
+
+            // I need to somehow produce a list of only my Projects and then put that list into the SelectList
+            var myUserId = User.Identity.GetUserId();
+            var myProjects = projHelper.ListUserProjects(myUserId);
+
+            if (ticket.ProjectId == 0)
+            {
+                ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
+            }
+
+            
+            ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
+
             return View(ticket);
         }
 
@@ -80,6 +119,9 @@ namespace Wray_Tracker.Controllers
             ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName", ticket.SubmitterId);
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View(ticket);
         }
 
@@ -99,6 +141,9 @@ namespace Wray_Tracker.Controllers
             ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName", ticket.SubmitterId);
+            ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
+            ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
+            ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View(ticket);
         }
 

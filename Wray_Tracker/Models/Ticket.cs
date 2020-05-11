@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,12 +13,15 @@ namespace Wray_Tracker.Models
 
         public int ProjectId { get; set; }
 
+        [Display(Name = "Ticket Type")]
         public int TicketTypeId { get; set; }
 
+        [Display(Name = "Ticket Status")]
         public int TicketStatusId { get; set; }
 
-        public int TicketPropertyId { get; set; }
-
+        [Display(Name = "Ticket Priority")]
+        public int TicketPriorityId { get; set; }
+        
         public string SubmitterId { get; set; }
 
         public string DeveloperId { get; set; }
@@ -39,6 +43,12 @@ namespace Wray_Tracker.Models
         public virtual ApplicationUser Submitter { get; set; } 
 
         public virtual ApplicationUser Developer { get; set; }
+
+        public virtual TicketStatus TicketStatus { get; set; }
+
+        public virtual TicketPriority TicketPriority { get; set; }
+
+        public virtual TicketType TicketType { get; set; }
 
         public virtual ICollection<TicketAttachment> Attachments { get; set; }
 

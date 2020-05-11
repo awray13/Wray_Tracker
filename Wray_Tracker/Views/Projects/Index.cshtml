@@ -35,7 +35,6 @@
         </tr>
     </thead>
     <tbody>
-
         @foreach (var item in Model)
         {
             <tr>
@@ -59,6 +58,8 @@
                 </td>
                 <td>
                     @Html.ActionLink("Manage Members", "ManageProjectLevelUsers", new { id = item.Id }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+
 
                 </td>
             </tr>

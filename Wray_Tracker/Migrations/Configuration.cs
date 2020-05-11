@@ -46,7 +46,7 @@ namespace Wray_Tracker.Migrations
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
-
+            
             // Assigning Roles of the Admin and Manager
             if (!context.Users.Any(u => u.Email == "aricks1986@gmail.com"))
             {
@@ -126,6 +126,50 @@ namespace Wray_Tracker.Migrations
 
             #endregion
 
+
+            #region Load up Ticket Types
+
+            context.TicketTypes.AddOrUpdate(
+                t => t.Name,
+                    new TicketType { Name = "Defect" },
+                    new TicketType { Name = "Software"},
+                    new TicketType { Name = "Hardware" },
+                    new TicketType { Name = "UI" },
+                    new TicketType { Name = "Other" }
+
+                );
+
+
+            #endregion
+
+            #region Load up Ticket Priorities
+
+            context.TicketPriorities.AddOrUpdate(
+                t => t.Name,
+                    new TicketPriority { Name = "Immediate" },
+                    new TicketPriority { Name = "High" },
+                    new TicketPriority { Name = "Medium" },
+                    new TicketPriority { Name = "Low" },
+                    new TicketPriority { Name = "On Hold" }
+                );
+
+
+            #endregion
+
+            #region Load up Ticket Status
+
+            context.TicketStatus.AddOrUpdate(
+                t => t.Name,
+                    new TicketStatus { Name = "New" },
+                    new TicketStatus { Name = "Assigned"},
+                    new TicketStatus { Name = "Resolved" },
+                    new TicketStatus { Name = "Reopened" },
+                    new TicketStatus { Name = "Archived" }
+                );
+
+
+            #endregion
+            context.SaveChanges();
 
             //  This method will be called after migrating to the latest version.
 
