@@ -11,6 +11,7 @@ namespace Wray_Tracker.Models
         #region Ids
         public int Id { get; set; }
 
+        [Display(Name = "Project")]
         public int ProjectId { get; set; }
 
         [Display(Name = "Ticket Type")]
@@ -22,8 +23,10 @@ namespace Wray_Tracker.Models
         [Display(Name = "Ticket Priority")]
         public int TicketPriorityId { get; set; }
         
+        [Display(Name = "Submitter")]
         public string SubmitterId { get; set; }
 
+        [Display(Name = "Developer")]
         public string DeveloperId { get; set; }
         #endregion
         #region Description
@@ -37,6 +40,7 @@ namespace Wray_Tracker.Models
 
         public bool IsArchived { get; set; }
         #endregion
+
         #region Navigation
         public virtual Project Project { get; set; }
 
