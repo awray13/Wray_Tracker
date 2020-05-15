@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -17,6 +18,7 @@ namespace Wray_Tracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserProjectHelper projHelper = new UserProjectHelper();
+        private TicketHelper ticketHelper = new TicketHelper();
         public ActionResult Index()
         {
             return View();
@@ -24,7 +26,16 @@ namespace Wray_Tracker.Controllers
 
         public ActionResult Dashboard()
         {
-            return View();
+            var myUserId = User.Identity.GetUserId();
+            var assigned = new DashboardVM();
+            
+
+            assigned.MyProjects = projHelper.ListUserProjects(myUserId).ToList();
+            assigned.MyTickets = ticketHelper.ListMyTickets(myUserId).ToList();
+
+
+            return View(assigned);
+            
         }
 
         public ActionResult About()

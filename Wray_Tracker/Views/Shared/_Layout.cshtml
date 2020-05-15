@@ -62,7 +62,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" style="color: #fff;">
                         <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                        @*<span class="badge badge-warning navbar-badge">15</span>*@
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <span class="dropdown-item dropdown-header">15 Notifications</span>
@@ -86,10 +86,10 @@
                     </div>
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>*@
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                            <i class="fas fa-th-large"></i>
+                        </a>
+                    </li>*@
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -118,28 +118,51 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
-                        <li class="nav-item has-treeview menu-open">
-                            <a href="#" class="nav-link active" style="background-color: #ff851b;">
+                        with font-awesome or any other icon font library -->
+                        <li class="nav-item has-treeview">
+                            <a href="@Url.Action("Dashboard", "Home")" class="nav-link active" style="background-color: #001f3f;">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
-                                    <i class="right fas fa-angle-left"></i>
+                                    @*<i class="right fas fa-angle-left"></i>*@
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>My Dashboard</p>
-                                    </a>
-                                </li>
-
-                                
+                            @*<ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>My Dashboard</p>
+                                        </a>
+                                    </li>
 
 
-                            </ul>
+
+
+                                </ul>*@
                         </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-copy"></i>
+                                    <p>
+                                        Admin
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Manage Roles</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        }
                         <!-- Projects dropdown nav list -->
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
@@ -150,16 +173,6 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Manage Roles</p>
-                                        </a>
-                                    </li>
-                                }
-
                                 @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item">
@@ -179,6 +192,13 @@
                                         </a>
                                     </li>
                                 }
+
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Projects")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Active Projects</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 
@@ -195,10 +215,10 @@
                                 <li class="nav-item">
                                     @if (User.IsInRole("Submitter"))
                                     {
-                                    <a href="@Url.Action("Create", "Tickets")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>New Ticket</p>
-                                    </a>
+                                        <a href="@Url.Action("Create", "Tickets")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>New Ticket</p>
+                                        </a>
                                     }
                                 </li>
                                 <li class="nav-item">
@@ -210,7 +230,7 @@
                                 <li class="nav-item">
                                     <a href="pages/charts/inline.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
+                                        <p>Ticket History</p>
                                     </a>
                                 </li>
                             </ul>
@@ -230,7 +250,7 @@
                                 }
                             }
                         </li>
-                        </ul>
+                    </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>
@@ -266,7 +286,7 @@
     <script src="~/Scripts/jquery.overlayScrollbars.min.js"></script>
 
     <!-- bs-custom-file-input -->
-<script src="~/Scripts/bs-custom-file-input.min.js"></script>
+    <script src="~/Scripts/bs-custom-file-input.min.js"></script>
 
     <!-- DataTables -->
     <script src="~/Scripts/jquery.dataTables.min.js"></script>
@@ -286,6 +306,9 @@
     <script src="~/Scripts/raphael.min.js"></script>
     <script src="~/Scripts/jquery.mapael.min.js"></script>
     <script src="~/Scripts/usa_states.min.js"></script>
+
+    <!-- Sweet Alerts -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <!-- ChartJS -->
     <script src="~/Scripts/Chart.min.js"></script>

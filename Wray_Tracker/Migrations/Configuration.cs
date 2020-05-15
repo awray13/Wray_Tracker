@@ -7,6 +7,7 @@ namespace Wray_Tracker.Migrations
     using Wray_Tracker.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using Wray_Tracker.Helper;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Wray_Tracker.Models.ApplicationDbContext>
     {
@@ -169,7 +170,54 @@ namespace Wray_Tracker.Migrations
 
 
             #endregion
+
+            #region Seed a Demo Project
+
+            context.Projects.AddOrUpdate(
+                t => t.Name,
+                new Project { 
+                    Name = "Seeded Project", 
+                    Description = "Seeded project to make sure to always have a Project in place ", 
+                    Created = DateTime.Now
+                });
+
             context.SaveChanges();
+            #endregion
+
+            #region Seed a Demo Ticket
+            // Store the newly created Project in a variable in case we need properties from it
+            var seededProjectId = context.Projects.FirstOrDefault(p => p.Name == "Seeded Project").Id;
+
+            // I have made the decision that this Seeded Ticket will be a Type of 'Defect'
+            var seededTicketTypeId = context.TicketTypes.FirstOrDefault(t => t.Name == "Defect").Id;
+
+            // I have decided that this weeded Ticket will be an Immediate priority
+            var seededTicketPriorityId = context.TicketPriorities.FirstOrDefault(t => t.Name == "Immediate").Id;
+
+            var seededTicketStatusId = context.TicketStatus.FirstOrDefault(t => t.Name == "New").Id;
+
+            var seededSubmitterId = context.Users.FirstOrDefault(u => u.Email == "wraytesting@gmail.com").Id;
+
+            // I have to associate this submitter with the project
+            var projHelper = new UserProjectHelper();
+            projHelper.AddUserToProject(seededSubmitterId, seededProjectId);
+
+
+            context.Tickets.AddOrUpdate(
+                t => t.Title,
+                new Ticket() { 
+                    Title = "Seeded Ticket 1",
+                    Description = "A well formed description of some defect",
+                    Created = DateTime.Now,
+                    ProjectId = seededProjectId,
+                    TicketTypeId = seededTicketTypeId,
+                    TicketPriorityId = seededTicketPriorityId,
+                    TicketStatusId = seededTicketStatusId,
+                    SubmitterId = seededSubmitterId
+                });
+
+            #endregion
+            
 
             //  This method will be called after migrating to the latest version.
 

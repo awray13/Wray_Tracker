@@ -105,13 +105,46 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "Developer, Submitter, Manager")]
+
+        // Custom Action Filter that checks before you allow user in to edit
+        
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Ticket ticket = db.Tickets.Find(id);
+
+            var currentUserId = User.Identity.GetUserId();
+
+            // I need some additional, more granular security to determine whether this is my 
+            // "this is my ticket" depends on your role
+            // If I am a Developer:
+            var authorized = true;
+            if ((User.IsInRole("Developer") && ticket.DeveloperId != currentUserId) ||
+                (User.IsInRole("Submitter") && ticket.SubmitterId != currentUserId))
+            {
+                authorized = false;
+               
+            }
+
+            if (!authorized)
+            {
+                TempData["UnAuthorizedTicketAccess"] = $"You are not authorized to Edit Ticket {id}";
+                return RedirectToAction("Dashboard", "Home");
+            }
+
+            if (User.IsInRole("Manager"))
+            {
+                var myTickets = db.Projects.Where(p => p.ManagerId == currentUserId).SelectMany(p => p.Tickets).Select(t => t.Id).ToList();
+
+            }
+
+
+
             if (ticket == null)
             {
                 return HttpNotFound();
@@ -130,7 +163,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPropertyId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {

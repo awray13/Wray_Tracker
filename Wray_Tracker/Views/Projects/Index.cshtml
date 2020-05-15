@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Wray_Tracker.Models.Project>
+﻿@using Wray_Tracker.Models
+@model IEnumerable<Project>
 
 @{
     ViewBag.Title = "Projects";
@@ -20,7 +21,7 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ManagerId)
+                @Html.DisplayName("Manager")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Created)
@@ -28,13 +29,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsArchived)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
+        @{
+            var db = new ApplicationDbContext();
+        }
+
         @foreach (var item in Model)
         {
             <tr>
@@ -45,7 +50,12 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ManagerId)
+                    @{ 
+                        var pm = db.Users.Find(item.ManagerId);
+                        var pmName = pm != null ? pm.FullName : "Unassigned";
+                    }
+
+                    @pmName
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Created)
@@ -53,12 +63,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Updated)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.IsArchived)
-                </td>
+                </td>*@
                 <td>
-                    @Html.ActionLink("Manage Members", "ManageProjectLevelUsers", new { id = item.Id }) |
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                        @Html.ActionLink("Manage Members |", "ManageProjectAssignments", new { id = item.Id });
+
+                        @Html.ActionLink(" Edit", "Edit", new { id = item.Id });
+                    }
+
+                    @if (User.IsInRole("Submitter"))
+                    {
+                        @Html.ActionLink("Create Ticket", "Create", "Tickets", new { projectId = item.Id }, null);
+                    }
+
 
 
                 </td>

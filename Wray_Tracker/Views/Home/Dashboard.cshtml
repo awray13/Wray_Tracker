@@ -1,24 +1,32 @@
-﻿@{
+﻿@using Wray_Tracker.ViewModels
+@model DashboardVM
+
+
+@{
     ViewBag.Title = "Dashboard";
 }
 
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">My Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">My Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+@* Admin will get to see everything *@
+@if (User.IsInRole("Admin"))
+{
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -548,7 +556,6 @@
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
-
                     <!-- Everyone will need to have access to data tables -->
                     <!-- TABLE: LATEST ORDERS -->
                     <div class="card">
@@ -857,5 +864,245 @@
         </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
+}
 
+@if (User.IsInRole("Submitter") || User.IsInRole("Developer") || User.IsInRole("Manager"))
+{
+    // Logged in user needs to be able to see Project and Ticket tables
+    // that they are currently assigned to.
+
+    // My Projects
+    <!-- Everyone will need to have access to data tables -->
+    <!-- TABLE: LATEST ORDERS -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header border-transparent">
+                <h2 class="card-title">My Projects</h2>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Project Name")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Description")
+                                </th>
+                                @*<th>
+                                    @Html.DisplayName("Manager")
+                                </th>*@
+                                <th>
+                                    @Html.DisplayName("Created")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Updated")
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.IsArchived) 
+                                </th>*@
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@{
+                                var db = new ApplicationDbContext();
+                            }*@
+
+                            @foreach (var item in Model.MyProjects)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    @*<td>
+                                        @{
+                                            var pm = db.Users.Find(item.ManagerId);
+                                            var pmName = pm != null ? pm.FullName : "Unassigned";
+                                        }
+
+                                        @pmName
+                                    </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Created)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Updated)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.IsArchived)
+                                    </td>*@
+                                    <td>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                        {
+                                            @Html.ActionLink("Manage Members |", "ManageProjectAssignments", new { id = item.Id });
+
+                                            @Html.ActionLink(" Edit", "Edit", new { id = item.Id });
+                                        }
+
+                                        @if (User.IsInRole("Submitter"))
+                                        {
+                                            @Html.ActionLink("Create Ticket", "Create", "Tickets", new { projectId = item.Id }, null);
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer clearfix">
+                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+            </div>*@
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+        <!-- My Tickets -->
+        <!-- Everyone will need to have access to data tables -->
+        <!-- TABLE: LATEST ORDERS -->
+        <div class="card">
+            <div class="card-header border-transparent">
+                <h2 class="card-title">My Tickets</h2>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayName("Developer")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Project")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Submitter")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Type")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Status")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Priority")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Title")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Description")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Created")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Updated")
+                                </th>
+                                @*<th>
+                    @Html.DisplayNameFor(model => model.IsArchived)
+                </th>*@
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.MyTickets)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Developer.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Submitter.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketType.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Created)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Updated)
+                                    </td>
+                                    @*<td>
+                        @Html.DisplayFor(modelItem => item.IsArchived)
+                    </td>*@
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer clearfix">
+                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+            </div>*@
+            <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+    </div>
+}
+@section scripts {
+    <script>
+        var unAuthorizedTicketAccess = '@TempData["UnAuthorizedTicketAccess"]';
+        if (unAuthorizedTicketAccess != "") {
+            Swal.fire({
+                title: 'Unauthorized Ticket Access Detected!',
+                text: unAuthorizedTicketAccess,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+        }
+    </script>
+    }
 

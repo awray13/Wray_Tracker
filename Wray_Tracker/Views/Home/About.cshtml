@@ -1,17 +1,13 @@
-﻿@using Microsoft.AspNet.Identity;
-@using Microsoft.AspNet.Identity.EntityFramework;
-@{
-
-}
-
-
-
+﻿
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
+                
                 <h1>@User.Identity.Name Profile</h1>
+                
+
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -36,9 +32,11 @@
                                  src="~/Images/user.svg"
                                  alt="User profile picture">
                         </div>
-
-                        <h3 class="profile-username text-center">@User.Identity.Name</h3>
-
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                             <h3 class="profile-username text-center">@User.Identity.Name</h3>
+                        }
+                        
                         @*<p class="text-muted text-center">@User.IsInRole("")</p>*@
 
                         <ul class="list-group list-group-unbordered mb-3">
