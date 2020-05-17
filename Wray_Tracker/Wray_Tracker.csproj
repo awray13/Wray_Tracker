@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\CustomUserData.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
+    <Compile Include="ViewModels\UserProfileVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\adminlte.css" />
@@ -387,6 +388,7 @@
     <Content Include="Views\Projects\ManageProjectLevelUsers.cshtml" />
     <Content Include="Smtp.config" />
     <Content Include="Views\Projects\ManageProjectLevelUsersRemove.cshtml" />
+    <Content Include="Views\Home\EditProfile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

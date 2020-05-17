@@ -1,13 +1,16 @@
-﻿
+﻿@using Wray_Tracker.ViewModels;
+@model UserProfileVM
+
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                
-                <h1>@User.Identity.Name Profile</h1>
-                
-
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <h1><strong>@Model.FirstName's Profile</strong></h1>
+                }
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -34,34 +37,35 @@
                         </div>
                         @if (User.Identity.IsAuthenticated)
                         {
-                             <h3 class="profile-username text-center">@User.Identity.Name</h3>
+                             <h3 class="profile-username text-center">@Model.FullName</h3>
+
+
+                            @*<p class="text-muted text-center">@User.IsInRole("")</p>*@
+
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Projects</b> <a class="float-right">@Model.MyProjects.Count()</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Tickets</b> <a class="float-right">@Model.MyTickets.Count()</a>
+                                </li>
+                            </ul>
                         }
-                        
-                        @*<p class="text-muted text-center">@User.IsInRole("")</p>*@
-
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                                <b>Projects</b> <a class="float-right">5</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Tickets</b> <a class="float-right">12</a>
-                            </li>
-                        </ul>
-
                     </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
                 <!-- About Me Box -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">CPU Traffic</span>
+                <div class="col-12">
+                    <a href="@Url.Action("EditProfile", "Home")">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                            <div class="info-box-content">
+                                <span class="text-bold">Edit Profile</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                    </div>
+                    </a>
                     <!-- /.info-box -->
                 </div>
                 <!-- /.card -->

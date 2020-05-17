@@ -7,6 +7,8 @@ namespace Wray_Tracker.ViewModels
 {
     public class CustomUserData
     {
+        public string Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -16,6 +18,8 @@ namespace Wray_Tracker.ViewModels
         public string RoleName { get; set; }
 
         public List<string> ProjectNames { get; set; }
+
+        public List<string> Tickets { get; set; }
 
         public string FullName 
         {

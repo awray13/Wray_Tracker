@@ -145,18 +145,21 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public ActionResult Details(int? projectId)
+        public ActionResult Details(int? id)
         {
-            if (projectId == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(projectId);
+
+            Project project = db.Projects.Find(id);
             ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
+
             if (project == null)
             {
                 return HttpNotFound();
             }
+
             return View(project);
         }
 
@@ -172,7 +175,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,ManagerId,Created,Updated,IsArchived")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,ManagerId")] Project project)
         {
 
             
@@ -195,6 +198,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)

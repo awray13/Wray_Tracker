@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
@@ -19,6 +20,7 @@ namespace Wray_Tracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserProjectHelper projHelper = new UserProjectHelper();
         private TicketHelper ticketHelper = new TicketHelper();
+        private UserRoleHelper roleHelper = new UserRoleHelper();
 
         [HttpPost]
         [AllowAnonymous]
@@ -42,33 +44,66 @@ namespace Wray_Tracker.Controllers
             
         }
 
+        // GET: User Profile
+        [HttpGet]
+        public ActionResult EditProfile()
+        {
+            // Store the Primary Key of the User in the currentUserId variable
+            var currentUserId = User.Identity.GetUserId();
+
+            // The currentUser variable represents the entire User record with something like 20 columns...I don't need all of these
+            var currentUser = db.Users.Find(currentUserId);
+            var userProfileVM = new UserProfileVM();
+            userProfileVM.Id = currentUser.Id;
+            userProfileVM.FirstName = currentUser.FirstName;
+            userProfileVM.LastName = currentUser.LastName;
+            userProfileVM.DisplayName = currentUser.DisplayName;
+            userProfileVM.MyProjects = projHelper.ListUserProjects(currentUserId).ToList();
+            userProfileVM.MyTickets = ticketHelper.ListMyTickets(currentUserId).ToList();
+            userProfileVM.Email = currentUser.Email;
+
+
+            return View(userProfileVM);
+        }
+
+        // POST: User Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(UserProfileVM model)
+        {
+            // I want to get a tracked User record based on the incoming model.Id
+            var currentUser = db.Users.Find(model.Id);
+            currentUser.FirstName = model.FirstName;
+            currentUser.LastName = model.LastName;
+            currentUser.DisplayName = model.DisplayName;
+            currentUser.Email = model.Email;
+            currentUser.UserName = model.Email;
+
+            db.SaveChanges();
+
+            TempData["EditProfileMessage"] = $"Your data has been changed successfully";
+            return RedirectToAction("About");
+        }
+
+
         public ActionResult About()
         {
-            var emptyCustomUserDataList = new List<CustomUserData>();
-            // I have decided that it should work this way...
-            var users = db.Users.ToList();
+            // Store the Primary Key of the User in the currentUserId variable
+            var currentUserId = User.Identity.GetUserId();
 
-            // Load up a Multi Select List of Users
-            ViewBag.UserIds = new MultiSelectList(users, "Id", "FullName");
+            // The currentUser variable represents the entire User record with something like 20 columns...I don't need all of these
+            var currentUser = db.Users.Find(currentUserId);
+            var userProfileVM = new UserProfileVM();
+            userProfileVM.Id = currentUser.Id;
+            userProfileVM.FirstName = currentUser.FirstName;
+            userProfileVM.LastName = currentUser.LastName;
+            userProfileVM.DisplayName = currentUser.DisplayName;
+            userProfileVM.MyProjects = projHelper.ListUserProjects(currentUserId).ToList();
+            userProfileVM.MyTickets = ticketHelper.ListMyTickets(currentUserId).ToList();
+            userProfileVM.Email = currentUser.Email;
 
-            // Load up a Multi Select List Of Projects
-            ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name");
 
-            // Load up the View Model
-            foreach (var user in users)
-            {
-                emptyCustomUserDataList.Add(new CustomUserData
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    ProjectNames = projHelper.ListUserProjects(user.Id).Select(p => p.Name).ToList()
-                });
-            }
-
-            return View(emptyCustomUserDataList);
-
-            
+            return View(userProfileVM);
         }
 
         public ActionResult Contact()

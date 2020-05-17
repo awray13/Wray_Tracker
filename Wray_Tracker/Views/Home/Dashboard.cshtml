@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">My Dashboard</h1>
+                <h1 class="m-0 text-dark"><strong>My Dashboard</strong></h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -37,10 +37,10 @@
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">CPU Traffic</span>
+                            <span class="info-box-text">Projects</span>
                             <span class="info-box-number">
                                 10
-                                <small>%</small>
+                                
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -949,9 +949,11 @@
                                     <td>
                                         @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                         {
-                                            @Html.ActionLink("Manage Members |", "ManageProjectAssignments", "Projects", new { id = item.Id }, null);
+                                            @Html.ActionLink("Manage Members |", "ManageProjectAssignments", "Projects", new { id = item.Id }, null)
 
-                                            @Html.ActionLink(" Edit", "Edit", "Projects", new { id = item.Id }, null);
+                                            @Html.ActionLink(" Edit |", "Edit", "Projects", new { id = item.Id }, null)
+
+                                            @Html.ActionLink(" Details", "Details", "Projects", new { id = item.Id }, null)
                                         }
 
                                         @if (User.IsInRole("Submitter"))
@@ -1071,8 +1073,9 @@
                         @Html.DisplayFor(modelItem => item.IsArchived)
                     </td>*@
                                     <td>
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                        @Html.ActionLink("Edit", "Edit", "Tickets", new { id = item.Id }, null) |
+
+                                        @Html.ActionLink("Details", "Details", "Tickets", new { id = item.Id }, null)
                                         @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                                     </td>
                                 </tr>
