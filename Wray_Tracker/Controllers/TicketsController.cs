@@ -105,7 +105,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles = "Developer, Submitter, Manager")]
+        [Authorize(Roles = "Developer, Submitter, Manager, Admin")]
 
         // Custom Action Filter that checks before you allow user in to edit
         
@@ -122,7 +122,7 @@ namespace Wray_Tracker.Controllers
 
             // I need some additional, more granular security to determine whether this is my 
             // "this is my ticket" depends on your role
-            // If I am a Developer:
+            // If I am a Developer or Submitter:
             var authorized = true;
             if ((User.IsInRole("Developer") && ticket.DeveloperId != currentUserId) ||
                 (User.IsInRole("Submitter") && ticket.SubmitterId != currentUserId))
@@ -136,7 +136,7 @@ namespace Wray_Tracker.Controllers
                 TempData["UnAuthorizedTicketAccess"] = $"You are not authorized to Edit Ticket {id}";
                 return RedirectToAction("Dashboard", "Home");
             }
-
+            // If I am a Project Manager
             if (User.IsInRole("Manager"))
             {
                 var myTickets = db.Projects.Where(p => p.ManagerId == currentUserId).SelectMany(p => p.Tickets).Select(t => t.Id).ToList();

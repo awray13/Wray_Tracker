@@ -14,12 +14,12 @@
         <div class="row">
             @* Left column that holds the users *@
             <div class="col">
-                @Html.ListBox("UserIds")
+                @Html.ListBox("UserIds", null, new { @class = "custom-select multiple" })
             </div>
 
             @* Right column for holding my Roles *@
             <div class="col">
-                @Html.DropDownList("RoleName", "- Select Role -")
+                @Html.DropDownList("RoleName", null, new { @class = "custom-select multiple" })
             </div>
         </div>
         <br />

@@ -30,7 +30,7 @@ namespace Wray_Tracker.Controllers
                 newUserData.FirstName = user.FirstName;
                 newUserData.LastName = user.LastName;
                 newUserData.Email = user.Email;
-                newUserData.RoleName = userRoleHelper.ListUserRoles(user.Id).FirstOrDefault() ?? "UnAssigned";
+                newUserData.RoleName = userRoleHelper.ListUserRoles(user.Id).FirstOrDefault() ?? "Unassigned";
 
                 viewData.Add(newUserData);
 

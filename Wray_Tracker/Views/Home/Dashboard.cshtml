@@ -949,9 +949,9 @@
                                     <td>
                                         @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                         {
-                                            @Html.ActionLink("Manage Members |", "ManageProjectAssignments", new { id = item.Id });
+                                            @Html.ActionLink("Manage Members |", "ManageProjectAssignments", "Projects", new { id = item.Id }, null);
 
-                                            @Html.ActionLink(" Edit", "Edit", new { id = item.Id });
+                                            @Html.ActionLink(" Edit", "Edit", "Projects", new { id = item.Id }, null);
                                         }
 
                                         @if (User.IsInRole("Submitter"))

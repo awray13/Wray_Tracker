@@ -71,6 +71,12 @@ namespace Wray_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (!user.EmailConfirmed)
+            {
+                TempData["UnconfirmedEmailError"] = "Please confirm your email to register your account!";
+                return RedirectToAction("Login");
+            }
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -174,7 +180,7 @@ namespace Wray_Tracker.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    var from = $"Smaug Tracker<{WebConfigurationManager.AppSettings["emailfrom"]}>";
+                    var from = $"Dragon Fly<{WebConfigurationManager.AppSettings["emailfrom"]}>";
                     var email = new MailMessage(from, model.Email)
                     {
                         Subject = "Confirm Your Account",
@@ -185,7 +191,8 @@ namespace Wray_Tracker.Controllers
                     var svc = new EmailService();
                     await svc.SendAsync(email);
 
-                    return RedirectToAction("Dashboard", "Home");
+                    TempData["UnconfirmedEmailEmailError"] = "Please check your email to confirm your account.";
+                    return RedirectToAction("Login", "Account");
                 }
                 AddErrors(result);
             }
@@ -429,7 +436,7 @@ namespace Wray_Tracker.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

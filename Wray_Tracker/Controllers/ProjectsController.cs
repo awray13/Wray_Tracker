@@ -33,6 +33,8 @@ namespace Wray_Tracker.Controllers
             // Load up a Multi Select List Of Projects
             ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name");
 
+            
+
             // Load up the View Model
             foreach (var user in users)
             {
@@ -41,6 +43,7 @@ namespace Wray_Tracker.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
+                    RoleName = roleHelper.ListUserRoles(user.Id).FirstOrDefault() ?? "Unassigned",
                     ProjectNames = projHelper.ListUserProjects(user.Id).Select(p => p.Name).ToList()
                 });
             }

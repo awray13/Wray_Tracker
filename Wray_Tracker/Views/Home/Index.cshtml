@@ -111,5 +111,20 @@
     <!-- AdminLTE App -->
     <script src="~/Scripts/adminlte.min.js"></script>
 
+    <!-- Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script>
+        var unconfirmedEmailError = '@TempData["UnconfirmedEmailError"]';
+        if (unconfirmedEmailError != "") {
+            Swal.fire({
+                title: 'Account Error!',
+                text: unconfirmedEmailError,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+        }
+    </script>
+
 </body>
 </html>

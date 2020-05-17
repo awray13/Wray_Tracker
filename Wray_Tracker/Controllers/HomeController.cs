@@ -19,6 +19,10 @@ namespace Wray_Tracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserProjectHelper projHelper = new UserProjectHelper();
         private TicketHelper ticketHelper = new TicketHelper();
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public ActionResult Index()
         {
             return View();
