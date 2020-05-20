@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @{ 
+                    @{
                         var pm = db.Users.Find(item.ManagerId);
                         var pmName = pm != null ? pm.FullName : "Unassigned";
                     }
@@ -66,25 +66,29 @@
                 @*<td>
                     @Html.DisplayFor(modelItem => item.IsArchived)
                 </td>*@
-                <td>
-                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                    {
-                        @Html.ActionLink("Manage Members |", "ManageProjectAssignments", new { id = item.Id })
+            <td>
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    @*@Html.ActionLink("Manage Members |", "ManageProjectAssignments", new { id = item.Id })*@
 
-                        @Html.ActionLink(" Edit |", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Assign Users |", "AssignUsers", new { projectId = item.Id })
 
-                        @Html.ActionLink(" Details", "Details", new { id = item.Id })
-                    }
+                    @Html.ActionLink(" Edit |", "Edit", new { id = item.Id })
 
-                    @if (User.IsInRole("Submitter"))
-                    {
-                        @Html.ActionLink("Create Ticket", "Create", "Tickets", new { projectId = item.Id }, null)
-                    }
+                    @Html.ActionLink(" Project Details", "ProjectDetails", new { id = item.Id })
+                }
+
+                @if (User.IsInRole("Submitter"))
+                {
+                    @Html.ActionLink("Create Ticket", "Create", "Tickets", new { projectId = item.Id }, null)
+                }
 
 
 
-                </td>
+            </td>
             </tr>
         }
     </tbody>
 </table>
+
+

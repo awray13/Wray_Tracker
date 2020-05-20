@@ -10,6 +10,7 @@ namespace Wray_Tracker.Helper
     public class UserProjectHelper
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         public bool IsUserOnProject(string userId, int projectId)
         {

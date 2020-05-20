@@ -183,7 +183,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ColorHelper.cs" />
+    <Compile Include="Helper\CustomComparer.cs" />
+    <Compile Include="Helper\HistoryDisplayHelper.cs" />
+    <Compile Include="Helper\HistoryHelper.cs" />
     <Compile Include="Helper\TicketHelper.cs" />
+    <Compile Include="Helper\AssignmentHelper.cs" />
     <Compile Include="Helper\UserProjectHelper.cs" />
     <Compile Include="Helper\UserRoleHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -204,6 +209,7 @@
     <Compile Include="ViewModels\CustomUserData.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
+    <Compile Include="ViewModels\TicketIndexVM.cs" />
     <Compile Include="ViewModels\UserProfileVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -329,12 +335,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Tickets\Create.cshtml" />
     <Content Include="Views\Tickets\Delete.cshtml" />
-    <Content Include="Views\Tickets\Details.cshtml" />
+    <Content Include="Views\Tickets\TicketDetails.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
     <Content Include="Views\Projects\Delete.cshtml" />
-    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Projects\ProjectDetails.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\TicketAttachments\Create.cshtml" />
@@ -385,10 +391,9 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Admin\ManageRoles.cshtml" />
     <Content Include="Views\Projects\ManageProjectAssignments.cshtml" />
-    <Content Include="Views\Projects\ManageProjectLevelUsers.cshtml" />
     <Content Include="Smtp.config" />
-    <Content Include="Views\Projects\ManageProjectLevelUsersRemove.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
+    <Content Include="Views\Projects\AssignUsers.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

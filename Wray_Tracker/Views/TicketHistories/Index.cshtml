@@ -1,7 +1,10 @@
-﻿@model IEnumerable<Wray_Tracker.Models.TicketHistory>
+﻿@using Wray_Tracker.Models;
+@using Wray_Tracker.Helper;
+@model IEnumerable<TicketHistory>
 
 @{
     ViewBag.Title = "Index";
+    
 }
 
 <h2>Index</h2>
@@ -10,35 +13,38 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Ticket.SubmitterId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Property)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OldValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NewValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ChangedOn)
-        </th>
-        <th></th>
-    </tr>
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Ticket.SubmitterId)
+            </th>*@
+            <th>
+                @Html.DisplayName("Changed By")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Property)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OldValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChangedOn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
 @foreach (var item in Model) {
+<tbody>
     <tr>
+        @*<td>
+                @Html.DisplayFor(modelItem => item.Ticket.SubmitterId)
+            </td>*@
         <td>
-            @Html.DisplayFor(modelItem => item.Ticket.SubmitterId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
+            @Html.DisplayFor(modelItem => item.User.FullName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Property)
@@ -47,17 +53,19 @@
             @Html.DisplayFor(modelItem => item.OldValue)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.NewValue)
+            @* At the moment I would need to feed the DisplayData method an instance of a TicketHistory *@
+            @HistoryDisplayHelper.DisplayData(item)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ChangedOn)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
+</tbody>
 }
 
 </table>

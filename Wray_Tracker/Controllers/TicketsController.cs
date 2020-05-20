@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Wray_Tracker.Helper;
 using Wray_Tracker.Models;
+using Wray_Tracker.ViewModels;
 
 namespace Wray_Tracker.Controllers
 {
@@ -16,16 +17,32 @@ namespace Wray_Tracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserProjectHelper projHelper = new UserProjectHelper();
+        private TicketHelper ticketHelper = new TicketHelper();
+        private HistoryHelper historyHelper = new HistoryHelper();
+        private HistoryDisplayHelper historyDisplayHelper = new HistoryDisplayHelper();
 
         // GET: Tickets
         public ActionResult Index()
         {
-            var tickets = db.Tickets.Include(t => t.Developer).Include(t => t.Project).Include(t => t.Submitter);
-            return View(tickets.ToList());
+            //var tickets = db.Tickets.Include(t => t.Developer).Include(t => t.Project).Include(t => t.Submitter);
+            var ticketIndexVMs = new List<TicketIndexVM>();
+
+            var allTickets = db.Tickets.ToList();
+            foreach(var ticket in allTickets)
+            {
+                ticketIndexVMs.Add(new TicketIndexVM
+                {
+                    Ticket = ticket,
+                    TicketStatus = new SelectList(db.TicketStatus, "Id", "Name", ticket.TicketStatusId)
+                });
+            }
+
+            return View(ticketIndexVMs);
+            //return View(tickets.ToList());
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult TicketDetails(int? id)
         {
             if (id == null)
             {
@@ -116,9 +133,13 @@ namespace Wray_Tracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+
+
             Ticket ticket = db.Tickets.Find(id);
 
+
             var currentUserId = User.Identity.GetUserId();
+            
 
             // I need some additional, more granular security to determine whether this is my 
             // "this is my ticket" depends on your role
@@ -136,6 +157,7 @@ namespace Wray_Tracker.Controllers
                 TempData["UnAuthorizedTicketAccess"] = $"You are not authorized to Edit Ticket {id}";
                 return RedirectToAction("Dashboard", "Home");
             }
+
             // If I am a Project Manager
             if (User.IsInRole("Manager"))
             {
@@ -143,15 +165,15 @@ namespace Wray_Tracker.Controllers
 
             }
 
-
-
             if (ticket == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
-            ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName", ticket.SubmitterId);
+
+            //ViewBag.AssignableDevs = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FirstName");
+            ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
+            ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
@@ -167,11 +189,24 @@ namespace Wray_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                // I want to use AsNoTracking() to get a Momento Ticket object
+                // clean disconnected view
+                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                ticket.Updated = DateTime.Now;
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                // using history helper to abstract info
+                historyHelper.ManageHistoryRecordCreation(oldTicket, newTicket);
+
+
+                return RedirectToAction("Index", "TicketHistories");
             }
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName", ticket.DeveloperId);
+
+            ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName", ticket.SubmitterId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");

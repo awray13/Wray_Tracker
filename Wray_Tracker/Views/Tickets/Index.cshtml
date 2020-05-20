@@ -1,7 +1,12 @@
-﻿@model IEnumerable<Wray_Tracker.Models.Ticket>
+﻿@using Wray_Tracker.Models;
+@using Wray_Tracker.Helper;
+@using Wray_Tracker.ViewModels;
+@model IEnumerable<TicketIndexVM>
 
 @{
     ViewBag.Title = "Index";
+
+    var colorHelper = new ColorHelper();
 }
 
 <h2>Index</h2>
@@ -31,16 +36,16 @@
                 @Html.DisplayName("Priority")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayName("Title")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayName("Description")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Created)
+                @Html.DisplayName("Created")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Updated)
+                @Html.DisplayName("Updated")
             </th>
             @*<th>
                 @Html.DisplayNameFor(model => model.IsArchived)
@@ -51,44 +56,43 @@
     <tbody>
         @foreach (var item in Model)
         {
-
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Developer.FullName)
+                    @Html.DisplayFor(modelItem => item.Ticket.Developer.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Project.Name)
+                    @Html.DisplayFor(modelItem => item.Ticket.Project.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Submitter.Email)
+                    @Html.DisplayFor(modelItem => item.Ticket.Submitter.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                    @Html.DisplayFor(modelItem => item.Ticket.TicketType.Name)
+                </td>
+                <td class="@ColorHelper.GetStatusColorClass(item.Ticket.TicketStatus.Name)">
+                    @Html.DisplayFor(modelItem => item.Ticket.TicketStatus.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                    @Html.DisplayFor(modelItem => item.Ticket.TicketPriority.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                    @Html.DisplayFor(modelItem => item.Ticket.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.DisplayFor(modelItem => item.Ticket.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Ticket.Created)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
+                    @Html.DisplayFor(modelItem => item.Ticket.Updated)
                 </td>
                 @*<td>
                     @Html.DisplayFor(modelItem => item.IsArchived)
                 </td>*@
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Ticket.Id }) |
+                    @Html.ActionLink("Ticket Details", "TicketDetails", new { id = item.Ticket.Id }) |
                     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                 </td>
             </tr>

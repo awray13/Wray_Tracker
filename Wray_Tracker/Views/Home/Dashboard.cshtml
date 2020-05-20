@@ -37,10 +37,10 @@
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Projects</span>
+                            <span class="info-box-text">Active Projects</span>
                             <span class="info-box-number">
-                                10
-                                
+                                6
+
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -50,27 +50,39 @@
                 <!-- /.col -->
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
-                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-book-open"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Likes</span>
-                            <span class="info-box-number">41,410</span>
+                            <span class="info-box-text">Active Tickets</span>
+                            <span class="info-box-number">7</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
                     <!-- /.info-box -->
                 </div>
                 <!-- /.col -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Managers</span>
+                            <span class="info-box-number">4</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">Sales</span>
-                            <span class="info-box-number">760</span>
+                            <span class="info-box-text">Developers</span>
+                            <span class="info-box-number">5</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -82,8 +94,8 @@
                         <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
                         <div class="info-box-content">
-                            <span class="info-box-text">New Members</span>
-                            <span class="info-box-number">2,000</span>
+                            <span class="info-box-text">Submitters</span>
+                            <span class="info-box-number">4</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -953,7 +965,7 @@
 
                                             @Html.ActionLink(" Edit |", "Edit", "Projects", new { id = item.Id }, null)
 
-                                            @Html.ActionLink(" Details", "Details", "Projects", new { id = item.Id }, null)
+                                            @Html.ActionLink(" Project Details", "ProjectDetails", "Projects", new { id = item.Id }, null)
                                         }
 
                                         @if (User.IsInRole("Submitter"))
@@ -1075,7 +1087,7 @@
                                     <td>
                                         @Html.ActionLink("Edit", "Edit", "Tickets", new { id = item.Id }, null) |
 
-                                        @Html.ActionLink("Details", "Details", "Tickets", new { id = item.Id }, null)
+                                        @Html.ActionLink("Ticket Details", "TicketDetails", "Tickets", new { id = item.Id }, null)
                                         @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                                     </td>
                                 </tr>

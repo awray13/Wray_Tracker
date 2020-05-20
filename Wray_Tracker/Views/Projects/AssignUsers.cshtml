@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "AssignUsers";
+}
+
+
+
+    <div class="container">
+        <div class="row card">
+            <div class="col">
+                <h2 class="card-header">AssignUsers</h2>
+                @using (Html.BeginForm())
+                {
+                    @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
+                    @Html.AntiForgeryToken()
+                    if (User.IsInRole("Admin"))
+                    {
+                        @Html.DropDownList("ProjectManagerId", "- Select Project Manager -")
+
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <h2>Submitters</h2>
+                                @Html.ListBox("SubmitterIds", null, new { @class = "custom-select multiple" })
+                            </div>
+                            <div class="col">
+                                <h2>Developers</h2>
+                                @Html.ListBox("DeveloperIds", null, new { @class = "custom-select multiple" })
+                            </div>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" style="margin: 10px;" class="btn btn-info">Assign</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @*<div class="row card">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Full Name")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Email")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Role Name")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Projects")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => user.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => user.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => user.RoleName)
+                                </td>
+                                <td>
+                                    @foreach (var projName in user.ProjectNames)
+                                    {
+                                        @projName
+                                        <br />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>*@
+
+    </div>
+
+

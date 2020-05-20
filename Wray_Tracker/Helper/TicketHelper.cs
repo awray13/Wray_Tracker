@@ -17,7 +17,7 @@ namespace Wray_Tracker.Helper
         {
             var developers = roleHelper.UsersInRole("Developer");
             var onProject = projectHelper.UsersOnProject(projectId);
-            return developers.Intersect(onProject).ToList();
+            return developers.Intersect(onProject, new CustomComparer.TicketComparer()).ToList();
         }
 
         public List<Ticket> ListMyTickets(string userId)

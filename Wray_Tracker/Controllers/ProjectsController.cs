@@ -18,6 +18,78 @@ namespace Wray_Tracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private UserProjectHelper projHelper = new UserProjectHelper();
         private UserRoleHelper roleHelper = new UserRoleHelper();
+        private AssignmentHelper assignHelper = new AssignmentHelper();
+
+        [Authorize(Roles = "Admin, Manager")]
+        public ActionResult AssignUsers(int projectId)
+        {
+
+            ViewBag.ProjectId = projectId;
+
+            if (User.IsInRole("Admin"))
+            {
+                var pmId = db.Projects.AsNoTracking().FirstOrDefault(p => p.Id == projectId).ManagerId;
+                ViewBag.ProjectManagerid = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); // has fourth parameter showing
+            }
+            else
+            {
+                var subIds = assignHelper.UsersOnProjectInRole(projectId, "Submitter").Select(u => u.Id);
+                ViewBag.SubmitterIds = new MultiSelectList(roleHelper.UsersInRole("Submitter"), "Id", "FullName", subIds); // has fourth parameter showing
+
+                var devIds = assignHelper.UsersOnProjectInRole(projectId, "Developer").Select(u => u.Id);
+                ViewBag.DeveloperIds = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName", devIds); // has fourth parameter showing
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AssignUsers(int projectId, string managerId, List<string> submitterIds, List<string> developerIds)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                // Dealing with PMs
+                // Remove current PM and then add the selected PM
+                var project = db.Projects.Find(projectId);
+                project.ManagerId = managerId;
+                db.SaveChanges();
+            }
+            else
+            {
+                // Dealing with Subs and Devs
+
+                // Remove all Subs on Project
+                foreach (var user in assignHelper.UsersOnProjectInRole(projectId, "Submitter"))
+                {
+                    projHelper.RemoveUserFromProject(user.Id, projectId);
+                }
+
+                // Add back all the selected Subs
+                if (submitterIds != null)
+                {
+                    foreach(var submitterId in submitterIds)
+                    {
+                        projHelper.AddUserToProject(submitterId, projectId);
+                    }
+                }
+
+                // Remove all Devs on Project
+                foreach (var user in assignHelper.UsersOnProjectInRole(projectId, "Submitter"))
+                {
+                    projHelper.RemoveUserFromProject(user.Id, projectId);
+                }
+                // Add back all the selected Devs
+                if (developerIds != null)
+                {
+                    foreach (var developerId in developerIds)
+                    {
+                        projHelper.AddUserToProject(developerId, projectId);
+                    }
+                }
+            }
+            return RedirectToAction("Dashboard", "Home");
+        }
 
         // Get: Manage Project Assignments
         [Authorize(Roles = "Admin, Manager")]
@@ -103,41 +175,6 @@ namespace Wray_Tracker.Controllers
             return RedirectToAction("ManageProjectAssignments");
         }
 
-
-        // Get: Manage Project Level Users
-        public ActionResult ManageProjectLevelUsers(int id)
-        {
-            var userIds = projHelper.UsersOnProject(id).Select(u => u.Id).ToList();
-            ViewBag.UserIds = new MultiSelectList(db.Users, "Id", "Email", userIds);
-            return View(db.Projects.Find(id));
-        }
-
-        // Post: Manage Project Level Users
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ManageProjectLevelUsers(List<string> userIds, int projectId)
-        {
-            var projMemeberIds = projHelper.UsersOnProject(projectId).Select(u => u.Id).ToList();
-
-            foreach (var memeberId in projMemeberIds)
-            {
-                projHelper.RemoveUserFromProject(memeberId, projectId);
-            }
-
-            if (userIds != null)
-            {
-                // Loop 1: Remove everyone currently on the selected project
-                foreach (var userId in userIds)
-                {
-                    projHelper.AddUserToProject(userId, projectId);
-                }
-
-            }
-
-            return RedirectToAction("ManageProjectLevelUsers", new { id = projectId });
-
-        }
-
         // GET: Projects
         public ActionResult Index()
         {
@@ -145,7 +182,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult ProjectDetails(int? id)
         {
             if (id == null)
             {
