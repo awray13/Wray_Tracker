@@ -83,5 +83,7 @@ namespace Wray_Tracker.Models
         public DbSet<TicketNotification> TicketNotifications { get; set; }
 
         public System.Data.Entity.DbSet<Wray_Tracker.ViewModels.UserProfileVM> UserProfileVMs { get; set; }
+
+        
     }
 }

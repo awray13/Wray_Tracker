@@ -146,5 +146,11 @@ namespace Wray_Tracker.Controllers
             }
             return View(new EmailModel());
         }
+
+        public PartialViewResult _SideNav()
+        {
+            var model = db.Users.Find(User.Identity.GetUserId());
+            return PartialView(model);
+        }
     }
 }

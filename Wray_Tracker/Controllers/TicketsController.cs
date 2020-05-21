@@ -20,6 +20,7 @@ namespace Wray_Tracker.Controllers
         private TicketHelper ticketHelper = new TicketHelper();
         private HistoryHelper historyHelper = new HistoryHelper();
         private HistoryDisplayHelper historyDisplayHelper = new HistoryDisplayHelper();
+        private NotificationHelper notificationHelper = new NotificationHelper();
 
         // GET: Tickets
         public ActionResult Index()
@@ -201,6 +202,9 @@ namespace Wray_Tracker.Controllers
 
                 // using history helper to abstract info
                 historyHelper.ManageHistoryRecordCreation(oldTicket, newTicket);
+
+                // Use the Notification Helper to intelligently create the appropriate
+                notificationHelper.ManageNotifications(oldTicket, newTicket);
 
 
                 return RedirectToAction("Index", "TicketHistories");

@@ -8,7 +8,7 @@ namespace Wray_Tracker.Models
 {
     public class Ticket
     {
-        #region Ids
+        #region Ids Parents
         public int Id { get; set; }
 
         [Display(Name = "Project")]
@@ -41,7 +41,7 @@ namespace Wray_Tracker.Models
         public bool IsArchived { get; set; }
         #endregion
 
-        #region Navigation
+        #region Navigation Children
         public virtual Project Project { get; set; }
 
         public virtual ApplicationUser Submitter { get; set; } 
@@ -63,6 +63,7 @@ namespace Wray_Tracker.Models
         public virtual ICollection<TicketNotification> Notifications { get; set; }
         #endregion
 
+        // Constructor
         public Ticket()
         {
             Attachments = new HashSet<TicketAttachment>();

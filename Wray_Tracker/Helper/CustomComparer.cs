@@ -26,7 +26,11 @@ namespace Wray_Tracker.Helper
 
             public int GetHashCode(ApplicationUser item)
             {
-                return item.Id.GetHashCode();
+                // What I intitially put down
+                //return item.Id.GetHashCode();
+
+                // Drews code
+                return new { item.Id }.GetHashCode();
             }
 
         }

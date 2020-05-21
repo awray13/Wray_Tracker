@@ -1,0 +1,178 @@
+﻿@model Wray_Tracker.Models.ApplicationUser
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link" style="background-color: #001f3f;">
+        <img src="~/Images/d-and-d-brands.png" alt="DragonFly Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">Dragon Fly</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/Images/user.svg" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="@Url.Action("About", "Home")" class="d-block">@Model.FullName</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+                <li class="nav-item has-treeview">
+                    <a href="@Url.Action("Dashboard", "Home")" class="nav-link active" style="background-color: #001f3f;">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                            @*<i class="right fas fa-angle-left"></i>*@
+                        </p>
+                    </a>
+                    @*<ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>My Dashboard</p>
+                                </a>
+                            </li>
+
+
+
+
+                        </ul>*@
+                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                Admin
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Manage Roles</p>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+                }
+                <!-- Projects dropdown nav list -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Projects
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("ManageProjectAssignments", "Projects")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Project Assignments</p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Create", "Projects")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Project</p>
+                                </a>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Projects")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Active Projects</p>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+
+                <!-- Tickets dropdown nav list -->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Tickets
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (User.IsInRole("Submitter"))
+                        {
+                            <li class="nav-item">
+
+                                <a href="@Url.Action("Create", "Tickets")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>New Ticket</p>
+                                </a>
+
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "Tickets")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Active Tickets</p>
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "TicketHistories")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ticket History</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "TicketNotifications")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ticket Notifications</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Log Out -->
+                <li class="nav-item">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "nav-link", style = "background-color: #ff851b;" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <a href="javascript:document.getElementById('logoutForm').submit()">
+                                <i class="fas fa-door-open nav-icon"></i>
+                                <p>Log Out</p>
+                            </a>
+                        }
+                    }
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
