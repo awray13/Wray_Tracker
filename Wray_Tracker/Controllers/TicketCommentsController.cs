@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -47,20 +48,32 @@ namespace Wray_Tracker.Controllers
         // POST: TicketComments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Created,Body")] TicketComment ticketComment)
+        public ActionResult Create(string commentBody, int ticketId, int? id)
+        //public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Created,Body")] TicketComment ticketComment)
         {
             if (ModelState.IsValid)
             {
-                db.TicketComments.Add(ticketComment);
+                var newComment = new TicketComment
+                {
+                    Body = commentBody,
+                    TicketId = ticketId,
+                    Created = DateTime.Now,
+                    UserId = User.Identity.GetUserId()
+                };
+
+                //ticketComment.UserId = User.Identity.GetUserId();
+                //ticketComment.Created = DateTime.Now;
+                db.TicketComments.Add(newComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard", "Tickets", new { id = ticketId});
             }
 
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketComment.TicketId);
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
-            return View(ticketComment);
+            //ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketComment.TicketId);
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", ticketComment.UserId);
+            return View();
         }
 
         // GET: TicketComments/Edit/5

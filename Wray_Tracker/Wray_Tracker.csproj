@@ -192,6 +192,7 @@
     <Compile Include="Helper\HistoryHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Helper\NotificationHelper.cs" />
+    <Compile Include="Helper\StringUtilities.cs" />
     <Compile Include="Helper\TicketHelper.cs" />
     <Compile Include="Helper\AssignmentHelper.cs" />
     <Compile Include="Helper\UserProjectHelper.cs" />
@@ -387,6 +388,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attachments\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -402,6 +404,7 @@
     <Content Include="Views\Projects\AssignUsers.cshtml" />
     <Content Include="Views\Shared\_SideNav.cshtml" />
     <Content Include="Views\Shared\_TicketTable.cshtml" />
+    <Content Include="Views\Tickets\Dashboard.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

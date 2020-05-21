@@ -22,6 +22,20 @@ namespace Wray_Tracker.Controllers
         private HistoryDisplayHelper historyDisplayHelper = new HistoryDisplayHelper();
         private NotificationHelper notificationHelper = new NotificationHelper();
 
+        public ActionResult Dashboard(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            return View(ticket);
+        }
+
         // GET: Tickets
         public ActionResult Index()
         {

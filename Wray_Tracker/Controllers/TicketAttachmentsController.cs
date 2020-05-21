@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Wray_Tracker.Helper;
 using Wray_Tracker.Models;
 
 namespace Wray_Tracker.Controllers
@@ -49,10 +52,24 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,UserId,Description,Created,FilePath,FileUrl")] TicketAttachment ticketAttachment)
+        public ActionResult Create([Bind(Include = "TicketId,UserId,FilePath,FileUrl")] TicketAttachment ticketAttachment, HttpPostedFileBase newAttachment)
         {
             if (ModelState.IsValid)
             {
+                if (newAttachment != null)
+                {
+                    // I need to isolate just the file name and ignoe the extension
+                    var justFileName = Path.GetFileNameWithoutExtension(newAttachment.FileName);
+                    justFileName = StringUtilities.URLFriendly(justFileName);
+                    justFileName = $"{justFileName}-{DateTime.Now.Ticks}";
+                    justFileName = $"{justFileName}{Path.GetExtension(newAttachment.FileName)}";
+
+                    ticketAttachment.FilePath = $"/Attachments/{justFileName}";
+                    newAttachment.SaveAs(Path.Combine(Server.MapPath("~/Attachments/"), justFileName));
+                }
+
+                ticketAttachment.Created = DateTime.Now;
+                ticketAttachment.UserId = User.Identity.GetUserId();
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
