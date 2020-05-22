@@ -73,19 +73,33 @@ namespace Wray_Tracker.Controllers
 
         // GET: Tickets/Create
         [Authorize(Roles = "Submitter")]
-        public ActionResult Create(int? projectId)
+        public ActionResult Create(int? projectId, Ticket ticket)
         {
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName");
+            // Need to find a way to have the Developers to be unassigned until actually assigned
+            
+            
 
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();
             var myProjects = projHelper.ListUserProjects(myUserId);
+           
 
             if (projectId == null)
             {
                 ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             }
 
+            if (ticket.DeveloperId == null)
+            {
+
+                ticket.DeveloperId = "Unassigned";
+            }
+            else
+            {
+                ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
+            }
+
+            
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
@@ -94,7 +108,11 @@ namespace Wray_Tracker.Controllers
 
             var newTicket = new Ticket();
             if (projectId != null)
+            {
                 newTicket.ProjectId = (int)projectId;
+            }
+                
+
 
             return View(newTicket);
         }
@@ -116,7 +134,16 @@ namespace Wray_Tracker.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DeveloperId = new SelectList(db.Users, "Id", "FirstName");
+            if (ticket.DeveloperId == null)
+            {
+
+                ticket.DeveloperId = "Unassigned";
+            }
+            else
+            {
+                ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
+            }
+            
 
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();
@@ -148,13 +175,9 @@ namespace Wray_Tracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-
-
             Ticket ticket = db.Tickets.Find(id);
 
-
             var currentUserId = User.Identity.GetUserId();
-            
 
             // I need some additional, more granular security to determine whether this is my 
             // "this is my ticket" depends on your role
@@ -185,7 +208,7 @@ namespace Wray_Tracker.Controllers
                 return HttpNotFound();
             }
 
-            //ViewBag.AssignableDevs = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FirstName");
+            
             ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");

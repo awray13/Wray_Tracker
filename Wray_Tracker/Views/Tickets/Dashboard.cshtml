@@ -25,9 +25,9 @@
     <section class="content">
 
         <!-- Default box -->
-        <div class="card">
+        <div class="card card-navy">
             <div class="card-header">
-                <h1 class="card-title text-primary"><i class="fas fa-ticket-alt"></i> @Html.DisplayFor(model => model.Title)</h1>
+                <h3 class="card-title"><i class="fas fa-ticket-alt"></i> @Html.DisplayFor(model => model.Title)</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -103,14 +103,15 @@
 
                                         @Html.TextArea("CommentBody")
                                         <br />
-                                        <button type="submit" class="btn btn-secondary">Add Comment</button>
+                                        <button type="submit" class="btn btn-warning">Add Comment</button>
                                     }
                                 }
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                        <h4 class="text-primary"><i class="fas fa-user-alt"></i> @Html.DisplayFor(model => model.Submitter.FullName)</h4>
+                        <h4 class="text-gray-dark"><i class="fas fa-user-alt"></i> @Html.DisplayFor(model => model.Submitter.FullName)</h4>
+                        <hr />
                         <p class="text-muted">@Html.DisplayFor(model => model.Description)</p>
                         <br>
                         <div class="text-muted">
@@ -121,31 +122,24 @@
                         </div>
 
                         <h5 class="mt-5 text-muted">Attachments</h5>
+                        @foreach (var attachment in Model.Attachments)
+                        {
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a target="_blank" href="@Url.Content(attachment.FilePath)" class="btn-link text-secondary"><i class="far fa-fw fa-file"></i>@attachment.FilePath</a>
+                                </li>
+                            
+                            </ul>
+                        }
+
                         @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "multipart/form-data" }))
                         {
                             @Html.AntiForgeryToken()
                             @Html.Hidden("TicketId", Model.Id)
-
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
-                                </li>
-                                <li>
-                                    <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
-                                </li>
-                            </ul>
                             <div class="text-center mt-5 mb-3">
-                                <button type="submit" class="btn btn-sm btn-secondary">Add Files</button><br />
                                 <input type="file" class="btn btn-default" name="newAttachment" />
+                                <button type="submit" class="btn btn-warning">Add Files</button>
+
                             </div>
                         }
                     </div>
