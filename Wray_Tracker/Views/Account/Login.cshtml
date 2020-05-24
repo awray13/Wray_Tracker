@@ -37,15 +37,15 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <b>Dragon</b>Fly
+            <img src="~/Images/onlinelogomaker-052320-1539-8719.png" width="360" />
         </div>
         <!-- /.login-logo -->
         <div class="card">
-            <div class="card-body login-card-body">
+            <div class="login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 @* Start of form, needs to be changed with razor code *@
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "card" }))
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "card-body" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="input-group mb-3">
@@ -67,8 +67,8 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
+                                @*@Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)*@
                             </div>
                         </div>
                         <!-- /.col -->
@@ -80,7 +80,7 @@
 
                 }
 
-                <div class="social-auth-links text-center mb-3">
+                @*<div class="social-auth-links text-center mb-3">
                     <p>- OR -</p>
                     <a href="#" class="btn btn-block btn-primary">
                         <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
@@ -88,7 +88,7 @@
                     <a href="#" class="btn btn-block btn-danger">
                         <i class="fab fa-google mr-2"></i> Sign in using Google
                     </a>
-                </div>
+                </div>*@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">

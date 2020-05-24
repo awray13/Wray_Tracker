@@ -17,6 +17,8 @@ namespace Wray_Tracker.Models
 
         public string DisplayName { get; set; }
 
+        public string AvatarPath { get; set; }
+
         [NotMapped]
         public string FullName
         {

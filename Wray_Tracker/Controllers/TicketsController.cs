@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,6 +22,7 @@ namespace Wray_Tracker.Controllers
         private HistoryHelper historyHelper = new HistoryHelper();
         private HistoryDisplayHelper historyDisplayHelper = new HistoryDisplayHelper();
         private NotificationHelper notificationHelper = new NotificationHelper();
+        private RecordManager recordManager = new RecordManager();
 
         public ActionResult Dashboard(int? id)
         {
@@ -89,18 +91,7 @@ namespace Wray_Tracker.Controllers
                 ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             }
 
-            if (ticket.DeveloperId == null)
-            {
-
-                ticket.DeveloperId = "Unassigned";
-            }
-            else
-            {
-                ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
-            }
-
             
-            ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
@@ -128,23 +119,12 @@ namespace Wray_Tracker.Controllers
             {
                 ticket.SubmitterId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t => t.Name == "New").Id;
+                ticket.DeveloperId = "Unassigned";
                 ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            if (ticket.DeveloperId == null)
-            {
-
-                ticket.DeveloperId = "Unassigned";
-            }
-            else
-            {
-                ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
-            }
-            
-
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();
             var myProjects = projHelper.ListUserProjects(myUserId);
@@ -154,7 +134,7 @@ namespace Wray_Tracker.Controllers
                 ViewBag.ProjectId = new SelectList(myProjects, "Id", "Name");
             }
 
-            
+            ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
@@ -237,11 +217,9 @@ namespace Wray_Tracker.Controllers
 
                 var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
-                // using history helper to abstract info
-                historyHelper.ManageHistoryRecordCreation(oldTicket, newTicket);
-
-                // Use the Notification Helper to intelligently create the appropriate
-                notificationHelper.ManageNotifications(oldTicket, newTicket);
+                // Holds and maintains historyHelper and notificationHelper
+                recordManager.ManageChangeRecords(oldTicket, newTicket);
+                
 
 
                 return RedirectToAction("Index", "TicketHistories");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,5 +27,29 @@ namespace Wray_Tracker.Helper
 
             return users;
         }
+
+        
+    }
+
+    public class UserHelper
+    {
+        private ApplicationDbContext Db = new ApplicationDbContext();
+        private string UserId { get; set; }
+
+        public UserHelper()
+        {
+            UserId = HttpContext.Current.User.Identity.GetUserId();
+        }
+
+        public string GetUserDisplayName()
+        {
+            return Db.Users.Find(UserId).DisplayName;
+        }
+
+        public string GetUserAvatar()
+        {
+            return Db.Users.Find(UserId).AvatarPath;
+        }
     }
 }
+        

@@ -46,7 +46,15 @@
                                 <div class="info-box bg-cyan">
                                     <div class="info-box-content">
                                         <span class="info-box-number text-center text-light">Developer</span>
-                                        <span class="info-box-text text-center text-light mb-0">@Model.Developer.FullName</span>
+                                        @if (Model.Developer != null)
+                                        {
+                                            <span class="info-box-text text-center text-light mb-0">@Model.Developer.FullName</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="info-box-text text-center text-light mb-0">@Model.DeveloperId</span>
+                                        }
+
                                     </div>
                                 </div>
                             </div>

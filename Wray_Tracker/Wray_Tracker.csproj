@@ -192,6 +192,7 @@
     <Compile Include="Helper\HistoryHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Helper\NotificationHelper.cs" />
+    <Compile Include="Helper\RecordManager.cs" />
     <Compile Include="Helper\StringUtilities.cs" />
     <Compile Include="Helper\TicketHelper.cs" />
     <Compile Include="Helper\AssignmentHelper.cs" />
@@ -220,6 +221,8 @@
     <Compile Include="ViewModels\UserProfileVM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Attachments\inlinestyles-637257090479222027.png" />
+    <Content Include="Attachments\logo2-637257078540381669.PNG" />
     <Content Include="Content\adminlte.css" />
     <Content Include="Content\adminlte.min.css" />
     <Content Include="Content\all.css" />
@@ -267,6 +270,10 @@
     <Content Include="Images\d-and-d-brands.png" />
     <Content Include="Images\d-and-d-brands.svg" />
     <Content Include="Images\favicon-32x32.png" />
+    <Content Include="Images\onlinelogomaker-052320-1539-8719-2000-transparent.png" />
+    <Content Include="Images\onlinelogomaker-052320-1539-8719-500.jpg" />
+    <Content Include="Images\onlinelogomaker-052320-1539-8719.png" />
+    <Content Include="Images\onlinelogomaker-052320-1556-4953-whtie.png" />
     <Content Include="Images\profile.jpg" />
     <Content Include="Images\user.svg" />
     <Content Include="Scripts\adminlte.js" />
@@ -388,13 +395,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Attachments\" />
+    <Folder Include="Avatar\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Attachments\srs-mvc-bugtracker-2-637257375584046468.pdf" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Admin\ManageRoles.cshtml" />
@@ -405,6 +413,7 @@
     <Content Include="Views\Shared\_SideNav.cshtml" />
     <Content Include="Views\Shared\_TicketTable.cshtml" />
     <Content Include="Views\Tickets\Dashboard.cshtml" />
+    <None Include="Properties\PublishProfiles\wraybugtracker - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
