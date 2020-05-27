@@ -86,8 +86,8 @@ namespace Wray_Tracker.Helper
                     ChangedOn = time,
                     UserId = userId,
                     Property = "DeveloperId",
-                    OldValue = oldTicket.DeveloperId == null ? "Unassigned" : oldTicket.Developer.FullName,
-                    NewValue = newTicket.DeveloperId == null ? "Unassigned" : newTicket.Developer.FullName,
+                    OldValue = oldTicket.Developer == null ? "Unassigned" : oldTicket.Developer.FullName,
+                    NewValue = newTicket.Developer == null ? "Unassigned" : newTicket.Developer.FullName,
                     TicketId = newTicket.Id
                 };
 

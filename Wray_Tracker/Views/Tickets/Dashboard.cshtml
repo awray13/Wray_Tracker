@@ -96,11 +96,21 @@
                                             <p>
                                                 @Html.Raw(comment.Body)
                                             </p>
+
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                            {
+                                                <div>
+                                                    <button type="submit" class="btn btn-xs bg-gradient-danger">Delete</button>
+                                                </div>
+                                            }
                                         </div>
+
                                     </div>
                                 }
                             </div>
+                            
                             <div class="col-12">
+                                
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, null))
@@ -108,10 +118,12 @@
                                         @Html.AntiForgeryToken()
                                         @Html.Hidden("TicketId", Model.Id)
                                         @Html.HiddenFor(model => model.Id)
-
+                                    <div>
+                                        <br />
                                         @Html.TextArea("CommentBody")
                                         <br />
-                                        <button type="submit" class="btn btn-warning">Add Comment</button>
+                                        <button type="submit" class="btn btn-light bg-gradient-orange">Add Comment</button>
+                                    </div>
                                     }
                                 }
                             </div>
@@ -130,13 +142,14 @@
                         </div>
 
                         <h5 class="mt-5 text-muted">Attachments</h5>
+                        <input type="file" class="small" name="newAttachment" /><br /><hr />
                         @foreach (var attachment in Model.Attachments)
                         {
                             <ul class="list-unstyled">
                                 <li>
                                     <a target="_blank" href="@Url.Content(attachment.FilePath)" class="btn-link text-secondary"><i class="far fa-fw fa-file"></i>@attachment.FilePath</a>
                                 </li>
-                            
+
                             </ul>
                         }
 
@@ -145,8 +158,8 @@
                             @Html.AntiForgeryToken()
                             @Html.Hidden("TicketId", Model.Id)
                             <div class="text-center mt-5 mb-3">
-                                <input type="file" class="btn btn-default" name="newAttachment" />
-                                <button type="submit" class="btn btn-warning">Add Files</button>
+
+                                <button type="submit" class="btn btn-sm bg-gradient-orange">Add Files</button>
 
                             </div>
                         }

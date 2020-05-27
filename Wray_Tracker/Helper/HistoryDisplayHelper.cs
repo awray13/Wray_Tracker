@@ -16,18 +16,11 @@ namespace Wray_Tracker.Helper
 
             var data = "";
 
-            switch(ticketHistory.Property)
-            {
-                case "DeveloperId":
-                    data = db.Users.FirstOrDefault(u => u.Id == ticketHistory.NewValue).FullName;
-                    break;
-                default:
-                    data = ticketHistory.NewValue;
-                    break;
-            }
+            data = db.Users.FirstOrDefault(u => u.Id == ticketHistory.UserId).FullName;
 
             return data;
-        }
-       
+
+        }   
     }
 }
+

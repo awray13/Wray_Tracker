@@ -217,6 +217,7 @@
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\EmailModel.cs" />
     <Compile Include="ViewModels\MultiListTicketVM.cs" />
+    <Compile Include="ViewModels\ProjectVM.cs" />
     <Compile Include="ViewModels\TicketIndexVM.cs" />
     <Compile Include="ViewModels\UserProfileVM.cs" />
   </ItemGroup>
@@ -414,6 +415,7 @@
     <Content Include="Views\Shared\_TicketTable.cshtml" />
     <Content Include="Views\Tickets\Dashboard.cshtml" />
     <None Include="Properties\PublishProfiles\wraybugtracker - Web Deploy.pubxml" />
+    <Content Include="Views\Account\DemoLogin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -20,11 +20,6 @@ namespace Wray_Tracker.Helper
             }
             var db = new ApplicationDbContext();
             return db.TicketNotifications.Where(t => t.RecipientId == userId && !t.IsRead).ToList();
-
-
-
-
-
         }
     }
 }

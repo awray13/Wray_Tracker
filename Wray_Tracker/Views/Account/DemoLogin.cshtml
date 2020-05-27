@@ -1,0 +1,142 @@
+﻿
+@{
+    Layout = null;
+}
+
+@*<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>DemoLogin</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-8 offset-2">
+                    @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("emailKey", "DemoAdminEmail")
+
+                        <button type="submit" class=" btn btn-primary btn-block btn-flat">Admin Log In</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dragon Fly | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link href="~/Content/all.min.css" rel="stylesheet" />
+
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <!-- icheck bootstrap -->
+    <link href="~/Content/icheck-bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Theme style -->
+    <link href="~/Content/adminlte.min.css" rel="stylesheet" />
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Images/favicon-32x32.png">
+
+
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="~/Images/onlinelogomaker-052320-1539-8719.png" width="360" />
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                @* Demo Admin *@
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("emailKey", "DemoAdminEmail")
+
+                    <button type="submit" class=" btn btn-primary btn-block">Admin Log In</button>
+                }
+
+                @* Demo PM *@
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("emailKey", "DemoPMEmail")
+
+                    <button type="submit" class=" btn btn-success btn-block">Project Manager Log In</button>
+                }
+
+                @* Demo Dev *@
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("emailKey", "DemoDevEmail")
+
+                    <button type="submit" class=" btn btn-info btn-block bg-navy">Developer Log In</button>
+                }
+
+                @* Demo Sub *@
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("emailKey", "DemoSubEmail")
+
+                    <button type="submit" class=" btn btn-warning btn-block bg-orange">Submitter Log In</button>
+                }
+
+                <p class="mb-1">
+                    <a href="@Url.Action("Login", "Account")" class="text-center">I already have a membership</a>
+                </p>
+                <p class="mb-0">
+                    <a href="@Url.Action("Register", "Account")" class="text-center">Register a new membership</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.min.js"></script>
+
+    <!-- Bootstrap 4 -->
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="~/Scripts/adminlte.min.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script>
+        var unconfirmedEmailError = '@TempData["UnconfirmedEmailError"]';
+        if (unconfirmedEmailError != "") {
+            Swal.fire({
+                title: 'Account Error!',
+                text: unconfirmedEmailError,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+        }
+    </script>
+
+</body>
+</html>

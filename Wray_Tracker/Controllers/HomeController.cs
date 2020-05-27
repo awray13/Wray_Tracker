@@ -29,22 +29,44 @@ namespace Wray_Tracker.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public ActionResult Dashboard()
         {
             var myUserId = User.Identity.GetUserId();
-            var assigned = new DashboardVM();
-            
+            var allTickets = db.Tickets.ToList();
+            // I have to load up a DashboardVM to feed to the view
+            var dashboardVM = new DashboardVM()
+            {
+                TicketCount = allTickets.Count,
+                HighPriorityTicketCount = allTickets.Where(t => t.TicketPriority.Name == "Immediate").Count(),
+                NewTicketCount = allTickets.Where(t => t.TicketStatus.Name == "New").Count(),
+                TotalComments = db.TicketComments.Count(),
+                AllTickets = allTickets
 
-            assigned.MyProjects = projHelper.ListUserProjects(myUserId).ToList();
-            assigned.MyTickets = ticketHelper.ListMyTickets(myUserId).ToList();
+            };
+            dashboardVM.ProjectVM.ProjectCount = db.Projects.Count();
+            dashboardVM.ProjectVM.AllProjects = db.Projects.ToList();
+            dashboardVM.ProjectVM.AllPMs = roleHelper.UsersInRole("Manager").ToList();
+            dashboardVM.ProjectVM.AllDevs = roleHelper.UsersInRole("Developer").ToList();
+            dashboardVM.ProjectVM.AllSubs = roleHelper.UsersInRole("Submitter").ToList();
+            dashboardVM.MyProjects = projHelper.ListUserProjects(myUserId).ToList();
+            dashboardVM.MyTickets = ticketHelper.ListMyTickets(myUserId).ToList();
 
 
-            return View(assigned);
+            return View(dashboardVM);
             
         }
 
+        public ActionResult Dismiss(int id)
+        {
+            var notification = db.TicketNotifications.Find(id);
+            notification.IsRead = true;
+            db.SaveChanges();
+            return RedirectToAction("Dashboard", "Home");
+        }
+
         // GET: User Profile
+        [Authorize]
         [HttpGet]
         public ActionResult EditProfile()
         {
@@ -85,7 +107,7 @@ namespace Wray_Tracker.Controllers
             return RedirectToAction("About");
         }
 
-
+        [Authorize]
         public ActionResult About()
         {
             // Store the Primary Key of the User in the currentUserId variable

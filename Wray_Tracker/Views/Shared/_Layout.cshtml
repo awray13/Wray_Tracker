@@ -46,7 +46,7 @@
             </ul>
 
             <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
+            @*<form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -55,7 +55,7 @@
                         </button>
                     </div>
                 </div>
-            </form>
+            </form>*@
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -69,13 +69,12 @@
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         @foreach (var notification in MessageHelper.GetUnreadNotifications())
                         {
-                            <a href="#" class="dropdown-item">
+                            <a href="#" class="dropdown-item close">
                                 <!-- Message Start -->
                                 <div class="media">
-
                                     <img src="~/Images/user.svg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                     <div class="media-body">
-                                        <h3 class="dropdown-item-title">
+                                        <h3 class="dropdown-item-title text-bold">
                                             @notification.Sender.FullName
                                         </h3>
                                         <p class="text-sm">@notification.NotificationBody</p>
@@ -89,7 +88,7 @@
                         @* if no messages then show 0 messages, not going to be a link *@
                         <a href="@Url.Action("Index", "TicketNotifications")" class="dropdown-item dropdown-footer">See All Messages</a>
                     </div>
-                </li>
+                    </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -177,6 +176,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             bsCustomFileInput.init();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('.close').click(function () {
+            $(this).slideUp().empty();
         });
     </script>
 

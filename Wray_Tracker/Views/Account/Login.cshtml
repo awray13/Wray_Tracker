@@ -68,7 +68,7 @@
                         <div class="col-8">
                             <div class="icheck-primary">
                                 @*@Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)*@
+                        @Html.LabelFor(m => m.RememberMe)*@
                             </div>
                         </div>
                         <!-- /.col -->
@@ -81,14 +81,14 @@
                 }
 
                 @*<div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google mr-2"></i> Sign in using Google
-                    </a>
-                </div>*@
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google mr-2"></i> Sign in using Google
+            </a>
+        </div>*@
                 <!-- /.social-auth-links -->
 
                 <p class="mb-1">
@@ -96,6 +96,9 @@
                 </p>
                 <p class="mb-0">
                     <a href="@Url.Action("Register", "Account")" class="text-center">Register a new membership</a>
+                </p>
+                <p class="mb-0">
+                    <a href="@Url.Action("DemoLogin", "Account")" class="text-center">Login as Demo User</a>
                 </p>
             </div>
             <!-- /.login-card-body -->

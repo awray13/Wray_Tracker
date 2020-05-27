@@ -34,15 +34,15 @@
     <body class="hold-transition register-page">
         <div class="register-box">
             <div class="register-logo">
-                <b>Dragon</b>Fly
+                <img src="~/Images/onlinelogomaker-052320-1539-8719.png" width="360" />
             </div>
 
             <div class="card">
-                <div class="card-body register-card-body">
+                <div class="register-card-body">
                     <p class="login-box-msg">Register a new membership</p>
 
                     @* Start of form, to be changed with razor code *@
-                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "card" }))
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "card-body" }))
                     {
                         @Html.AntiForgeryToken()
                     <div class="input-group mb-3">
@@ -111,7 +111,7 @@
                 
                     }
 
-                    <div class="social-auth-links text-center">
+                    @*<div class="social-auth-links text-center">
                         <p>- OR -</p>
                         <a href="#" class="btn btn-block btn-primary">
                             <i class="fab fa-facebook mr-2"></i>
@@ -121,7 +121,7 @@
                             <i class="fab fa-google mr-2"></i>
                             Sign up using Google
                         </a>
-                    </div>
+                    </div>*@
 
                     <a href="@Url.Action("Login", "Account")" class="text-center">I already have a membership</a>
                 </div>

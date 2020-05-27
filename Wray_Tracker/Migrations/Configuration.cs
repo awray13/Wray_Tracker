@@ -8,6 +8,7 @@ namespace Wray_Tracker.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Wray_Tracker.Helper;
+    using System.Web.Configuration;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Wray_Tracker.Models.ApplicationDbContext>
     {
@@ -47,6 +48,7 @@ namespace Wray_Tracker.Migrations
 
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
+            var demoPassword = WebConfigurationManager.AppSettings["DemoPassword"];
             
             // Assigning Roles of the Admin and Manager
             if (!context.Users.Any(u => u.Email == "aricks1986@gmail.com"))
@@ -67,8 +69,8 @@ namespace Wray_Tracker.Migrations
                 userManager.AddToRoles(user.Id, "Admin");
             }
 
-            // Same thing goes for the Manager
-            if (!context.Users.Any(u => u.Email == "JasonTwichell@coderfoundry.com"))
+                // Same thing goes for the Manager
+                if (!context.Users.Any(u => u.Email == "JasonTwichell@coderfoundry.com"))
             {
                 var user = new ApplicationUser
                 {
@@ -125,6 +127,82 @@ namespace Wray_Tracker.Migrations
                 userManager.AddToRoles(user.Id, "Submitter");
             }
 
+            // Demo Users
+            if (!context.Users.Any(u => u.Email == "demoadmin@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "demoadmin@mailinator.com",
+                    Email = "demoadmin@mailinator.com",
+                    FirstName = "Bob",
+                    LastName = "Tester",
+                    DisplayName = "Bob",
+                    EmailConfirmed = true
+                };
+
+                // This line creates the User in the DB
+                userManager.Create(user, demoPassword);
+
+                // This line attaches the Role of Submitter to this specific user
+                userManager.AddToRoles(user.Id, "Admin");
+            }
+
+            if (!context.Users.Any(u => u.Email == "demopm@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "demopm@mailinator.com",
+                    Email = "demopm@mailinator.com",
+                    FirstName = "Dave",
+                    LastName = "Tester",
+                    DisplayName = "Dave",
+                    EmailConfirmed = true
+                };
+
+                // This line creates the User in the DB
+                userManager.Create(user, demoPassword);
+
+                // This line attaches the Role of Submitter to this specific user
+                userManager.AddToRoles(user.Id, "Manager");
+            }
+
+            if (!context.Users.Any(u => u.Email == "demodev@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "demodev@mailinator.com",
+                    Email = "demodev@mailinator.com",
+                    FirstName = "Mary",
+                    LastName = "Tester",
+                    DisplayName = "Mary",
+                    EmailConfirmed = true
+                };
+
+                // This line creates the User in the DB
+                userManager.Create(user, demoPassword);
+
+                // This line attaches the Role of Submitter to this specific user
+                userManager.AddToRoles(user.Id, "Developer");
+            }
+
+            if (!context.Users.Any(u => u.Email == "demosub@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "demosub@mailinator.com",
+                    Email = "demosub@mailinator.com",
+                    FirstName = "Jamie",
+                    LastName = "Tester",
+                    DisplayName = "Jamie",
+                    EmailConfirmed = true
+                };
+
+                // This line creates the User in the DB
+                userManager.Create(user, demoPassword);
+
+                // This line attaches the Role of Submitter to this specific user
+                userManager.AddToRoles(user.Id, "Submitter");
+            }
             #endregion
 
 

@@ -119,7 +119,6 @@ namespace Wray_Tracker.Controllers
             {
                 ticket.SubmitterId = User.Identity.GetUserId();
                 ticket.TicketStatusId = db.TicketStatus.FirstOrDefault(t => t.Name == "New").Id;
-                ticket.DeveloperId = "Unassigned";
                 ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();

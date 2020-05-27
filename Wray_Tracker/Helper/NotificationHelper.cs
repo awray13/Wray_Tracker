@@ -17,7 +17,7 @@ namespace Wray_Tracker.Helper
             // Manage a Dev assignment notification
             GenerateAssignmentNotifications(oldTicket, newTicket);
 
-            //
+            // Manage ticket change notifications
             GenrateTicketChangeNotifications(newTicket);
 
         }

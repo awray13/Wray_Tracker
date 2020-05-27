@@ -133,7 +133,7 @@
 
                             </li>
                         }
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                         {
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Tickets")" class="nav-link">

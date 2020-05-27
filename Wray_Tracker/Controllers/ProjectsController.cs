@@ -105,8 +105,6 @@ namespace Wray_Tracker.Controllers
             // Load up a Multi Select List Of Projects
             ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name");
 
-            
-
             // Load up the View Model
             foreach (var user in users)
             {
@@ -147,8 +145,8 @@ namespace Wray_Tracker.Controllers
 
         }
 
-
         // GET: Manage Project Level Users Remove
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult ManageProjectLevelUsersRemove(int id)
         {
             var userIds = projHelper.UsersOnProject(id).Select(u => u.Id).ToList();
@@ -176,12 +174,14 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
         }
 
         // GET: Projects/Details/5
+        [Authorize]
         public ActionResult ProjectDetails(int? id)
         {
             if (id == null)
@@ -201,6 +201,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create()
         {
             ViewBag.ManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName");
@@ -259,6 +260,7 @@ namespace Wray_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                project.Updated = DateTime.Now;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -267,6 +269,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
