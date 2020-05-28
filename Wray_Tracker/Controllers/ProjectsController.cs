@@ -13,6 +13,7 @@ using Wray_Tracker.ViewModels;
 
 namespace Wray_Tracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -213,6 +214,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create([Bind(Include = "Id,Name,Description,ManagerId")] Project project)
         {
 

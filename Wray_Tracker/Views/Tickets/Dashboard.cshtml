@@ -9,7 +9,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Ticket Dashboard</h1>
+                    <h2>Details for Ticket #@Model.Id</h2>
+                    <p>
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class= "text-gray"}) |
+                        @Html.ActionLink("Back to List", "Index", null, new { @class= "text-gray"})
+                    </p>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -122,7 +126,7 @@
                                         <br />
                                         @Html.TextArea("CommentBody")
                                         <br />
-                                        <button type="submit" class="btn btn-light bg-gradient-orange">Add Comment</button>
+                                        <button type="submit" class="btn btn-sm bg-gradient-orange text-white">Add Comment</button>
                                     </div>
                                     }
                                 }
@@ -159,7 +163,7 @@
                             @Html.Hidden("TicketId", Model.Id)
                             <div class="text-center mt-5 mb-3">
 
-                                <button type="submit" class="btn btn-sm bg-gradient-orange">Add Files</button>
+                                <button type="submit" class="btn btn-sm bg-gradient-orange text-white">Add Files</button>
 
                             </div>
                         }
@@ -173,7 +177,3 @@
     </section>
     <!-- /.content -->
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

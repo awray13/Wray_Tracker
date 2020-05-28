@@ -14,7 +14,7 @@ using Wray_Tracker.ViewModels;
 
 namespace Wray_Tracker.Controllers
 {
-    
+    [Authorize]
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

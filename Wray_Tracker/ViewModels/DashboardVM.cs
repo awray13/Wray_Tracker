@@ -24,6 +24,8 @@ namespace Wray_Tracker.ViewModels
 
         public int TotalComments { get; set; }
 
+        public string RoleName { get; set; }
+
         public ProjectVM ProjectVM { get; set; }
 
         public DashboardVM()

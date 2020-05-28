@@ -14,6 +14,7 @@ using Wray_Tracker.ViewModels;
 
 namespace Wray_Tracker.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -45,7 +46,7 @@ namespace Wray_Tracker.Controllers
             var ticketIndexVMs = new List<TicketIndexVM>();
 
             var allTickets = db.Tickets.ToList();
-            foreach(var ticket in allTickets)
+            foreach (var ticket in allTickets)
             {
                 ticketIndexVMs.Add(new TicketIndexVM
                 {
@@ -78,20 +79,20 @@ namespace Wray_Tracker.Controllers
         public ActionResult Create(int? projectId, Ticket ticket)
         {
             // Need to find a way to have the Developers to be unassigned until actually assigned
-            
-            
+
+
 
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();
             var myProjects = projHelper.ListUserProjects(myUserId);
-           
+
 
             if (projectId == null)
             {
                 ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             }
 
-            
+
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name");
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
@@ -102,7 +103,7 @@ namespace Wray_Tracker.Controllers
             {
                 newTicket.ProjectId = (int)projectId;
             }
-                
+
 
 
             return View(newTicket);
@@ -113,6 +114,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Submitter")]
         public ActionResult Create([Bind(Include = "Id,ProjectId,TicketTypeId,TicketPriorityId,Title,Description")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -146,7 +148,7 @@ namespace Wray_Tracker.Controllers
         [Authorize(Roles = "Developer, Submitter, Manager, Admin")]
 
         // Custom Action Filter that checks before you allow user in to edit
-        
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -166,7 +168,7 @@ namespace Wray_Tracker.Controllers
                 (User.IsInRole("Submitter") && ticket.SubmitterId != currentUserId))
             {
                 authorized = false;
-               
+
             }
 
             if (!authorized)
@@ -187,7 +189,7 @@ namespace Wray_Tracker.Controllers
                 return HttpNotFound();
             }
 
-            
+
             ViewBag.DeveloperId = new SelectList(ticketHelper.AssignableDevelopers(ticket.ProjectId), "Id", "FullName", ticket.DeveloperId);
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.SubmitterId = new SelectList(db.Users, "Id", "FirstName");
@@ -206,19 +208,27 @@ namespace Wray_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                // I want to use AsNoTracking() to get a Momento Ticket object
-                // clean disconnected view
-                var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
+                if (User.IsInRole("Developer") && userId == ticket.DeveloperId || User.IsInRole("Admin") || User.IsInRole("Manager") && ticket.Project.ManagerId == userId || User.IsInRole("Submitter") && userId == ticket.SubmitterId)
+                {
+                    // I want to use AsNoTracking() to get a Momento Ticket object
+                    // clean disconnected view
+                    var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
-                ticket.Updated = DateTime.Now;
-                db.Entry(ticket).State = EntityState.Modified;
-                db.SaveChanges();
+                    ticket.Updated = DateTime.Now;
+                    db.Entry(ticket).State = EntityState.Modified;
+                    db.SaveChanges();
 
-                var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+                    var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
-                // Holds and maintains historyHelper and notificationHelper
-                recordManager.ManageChangeRecords(oldTicket, newTicket);
-                
+                    // Holds and maintains historyHelper and notificationHelper
+                    recordManager.ManageChangeRecords(oldTicket, newTicket);
+                }
+                else
+                {
+                    return View("Error");
+                }
 
 
                 return RedirectToAction("Index", "TicketHistories");
@@ -231,32 +241,6 @@ namespace Wray_Tracker.Controllers
             ViewBag.TicketStatusId = new SelectList(db.TicketStatus, "Id", "Name");
             ViewBag.TicketTypeId = new SelectList(db.TicketTypes, "Id", "Name");
             return View(ticket);
-        }
-
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticket);
-        }
-
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Ticket ticket = db.Tickets.Find(id);
-            db.Tickets.Remove(ticket);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
