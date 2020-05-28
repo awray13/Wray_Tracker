@@ -51,6 +51,7 @@ namespace Wray_Tracker.Controllers
             dashboardVM.ProjectVM.AllSubs = roleHelper.UsersInRole("Submitter").ToList();
             dashboardVM.MyProjects = projHelper.ListUserProjects(myUserId).ToList();
             dashboardVM.MyTickets = ticketHelper.ListMyTickets(myUserId).ToList();
+            dashboardVM.RoleNames = roleHelper.ListUserRoles(myUserId).FirstOrDefault() ?? "Unassigned";
 
 
             return View(dashboardVM);

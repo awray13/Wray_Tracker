@@ -34,7 +34,7 @@ namespace Wray_Tracker.Controllers
             Ticket ticket = db.Tickets.Find(id);
             if (ticket == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(ticket);
         }

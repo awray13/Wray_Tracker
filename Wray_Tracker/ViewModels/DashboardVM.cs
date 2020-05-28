@@ -24,7 +24,7 @@ namespace Wray_Tracker.ViewModels
 
         public int TotalComments { get; set; }
 
-        public string RoleName { get; set; }
+        public string RoleNames { get; set; }
 
         public ProjectVM ProjectVM { get; set; }
 
@@ -35,6 +35,8 @@ namespace Wray_Tracker.ViewModels
             AllTickets = new List<Ticket>();
             AllTicketHistory = new List<TicketHistory>();
             ProjectVM = new ProjectVM();
+            
+
 
         }
 

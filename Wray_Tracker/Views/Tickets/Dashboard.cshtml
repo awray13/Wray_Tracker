@@ -30,33 +30,24 @@
 
         <!-- Default box -->
         <div class="card card-navy">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-ticket-alt"></i> @Html.DisplayFor(model => model.Title)</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+            <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                <h3 class="card-header">@Html.DisplayFor(model => model.Title)</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                         <div class="row">
                             <div class="col-12 col-sm-4">
-                                <div class="info-box bg-cyan">
+                                <div class="info-box bg-gradient-light">
                                     <div class="info-box-content">
-                                        <span class="info-box-number text-center text-light">Developer</span>
+                                        <span class="info-box-number text-center">Developer</span>
                                         @if (Model.Developer != null)
                                         {
-                                            <span class="info-box-text text-center text-light mb-0">@Model.Developer.FullName</span>
+                                            <span class="info-box-text text-center mb-0 text-muted">@Model.Developer.FullName</span>
                                         }
                                         else
                                         {
-                                            <span class="info-box-text text-center text-light mb-0">@Model.DeveloperId</span>
+                                            <span class="info-box-text text-center mb-0 text-muted">@Model.DeveloperId</span>
                                         }
 
                                     </div>
