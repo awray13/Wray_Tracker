@@ -72,7 +72,7 @@ namespace Wray_Tracker.Controllers
                 ticketAttachment.UserId = User.Identity.GetUserId();
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Dashboard", "Tickets");
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketAttachment.TicketId);
