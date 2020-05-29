@@ -3,16 +3,15 @@
     ViewBag.Title = "AssignUsers";
 }
 
-
-
     <div class="container">
         <div class="row card card-navy">
             <div class="col">
                 <h2 class="card-header">AssignUsers</h2>
                 @using (Html.BeginForm())
                 {
-                    @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
+
                     @Html.AntiForgeryToken()
+                    @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
                     if (User.IsInRole("Admin"))
                     {
                         @Html.DropDownList("ProjectManagerId", "- Select Project Manager -")

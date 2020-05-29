@@ -29,7 +29,7 @@
                 <br />
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-outline-secondary" style="">Assign to Projects</button>
+                        <button type="submit" class="btn bg-gradient-dark" style="">Assign to Project</button>
                     </div>
                 </div>
             }
@@ -37,7 +37,7 @@
         <br />
         @* Right Side Lists *@
         <div class="col">
-            @using (Html.BeginForm("ManageProjectLevelUsersRemove", "Projects"))
+            @using (Html.BeginForm("ManageProjectLevelUsersRemove", "Projects", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
 
@@ -52,7 +52,7 @@
                 <br />
                 <div class="row">
                     <div class="col">
-                        <button type="submit" class="btn btn-outline-danger" style="">Unassign from Project</button>
+                        <button type="submit" class="btn bg-gradient-orange text-white" style="">Unassign from Project</button>
                     </div>
                 </div>
             }

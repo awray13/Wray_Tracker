@@ -273,7 +273,7 @@ namespace Wray_Tracker.Controllers
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
 
-                var from = $"Smaug Tracker<{WebConfigurationManager.AppSettings["emailfrom"]}>";
+                var from = $"Dragon Fly<{WebConfigurationManager.AppSettings["emailfrom"]}>";
                 var email = new MailMessage(from, model.Email)
                 {
                     Subject = "Reset Your Password",

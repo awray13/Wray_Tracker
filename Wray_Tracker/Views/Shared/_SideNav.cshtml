@@ -1,13 +1,13 @@
 ﻿@model Wray_Tracker.Models.ApplicationUser
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-light-gray-dark elevation-5">
+<aside class="main-sidebar sidebar-dark-primary elevation-5">
     <!-- Brand Logo -->
     <a href="@Url.Action("Dashboard", "Home")" class="brand-link bg-gradient-navy">
         <img src="~/Images/d-and-d-brands.png" alt="DragonFly Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8; margin-right: -.5rem;">
         <span class="brand-text font-weight-light">
-            <img src="~/Images/onlinelogomaker-052320-1556-4953-whtie.png" style="width: 70%;"/>
+            <img src="~/Images/onlinelogomaker-052320-1556-4953-whtie.png" style="width: 70%;" />
         </span>
     </a>
 
@@ -44,24 +44,24 @@
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
                     <a href="@Url.Action("Dashboard", "Home")" class="nav-link active bg-gradient-navy">
-                        <i class="nav-icon fas fa-binoculars"></i>
+                        <i class="nav-icon far fa-compass"></i>
                         <p>
                             Dashboard
                             @*<i class="right fas fa-angle-left"></i>*@
                         </p>
                     </a>
                     @*<ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>My Dashboard</p>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Dashboard", "Home")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>My Dashboard</p>
+                                </a>
+                            </li>
 
 
 
 
-                    </ul>*@
+                        </ul>*@
                 </li>
                 @if (User.IsInRole("Admin"))
                 {
@@ -87,44 +87,39 @@
                     </li>
                 }
                 <!-- Projects dropdown nav list -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Projects
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
-                        {
+                @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                Projects
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="@Url.Action("ManageProjectAssignments", "Projects")" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Project Assignments</p>
                                 </a>
                             </li>
-                        }
-
-                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                        {
                             <li class="nav-item">
                                 <a href="@Url.Action("Create", "Projects")" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Create Project</p>
                                 </a>
                             </li>
-
-
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Projects")" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Active Projects</p>
                                 </a>
                             </li>
-                        }
-                    </ul>
-                </li>
+
+                        </ul>
+                    </li>
+                }
 
                 <!-- Tickets dropdown nav list -->
                 <li class="nav-item has-treeview">
@@ -171,20 +166,19 @@
                     </ul>
                 </li>
                 <!-- Log Out -->
-
                 @*@if (Request.IsAuthenticated)
-                {
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
-                        @Html.AntiForgeryToken()
-                        <li class="nav-item">
-                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link bg-gradient-orange">
-                                <i class="fas fa-door-open nav-icon text-white"></i>
-                                <p class="text-white"> Log Out</p>
-                            </a>
-                        </li>
-                    }
-                }*@
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <li class="nav-item">
+                                <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link bg-gradient-orange">
+                                    <i class="fas fa-door-open nav-icon text-white"></i>
+                                    <p class="text-white"> Log Out</p>
+                                </a>
+                            </li>
+                        }
+                    }*@
 
             </ul>
         </nav>

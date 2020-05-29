@@ -29,7 +29,7 @@ namespace Wray_Tracker.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                var pmId = db.Projects.AsNoTracking().FirstOrDefault(p => p.Id == projectId).ManagerId;
+                var pmId = db.Projects.FirstOrDefault(p => p.Id == projectId).ManagerId;
                 ViewBag.ProjectManagerid = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); // has fourth parameter showing
             }
             else
@@ -41,11 +41,12 @@ namespace Wray_Tracker.Controllers
                 ViewBag.DeveloperIds = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName", devIds); // has fourth parameter showing
 
             }
-            return View();
+            return View(projectId);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult AssignUsers(int projectId, string managerId, List<string> submitterIds, List<string> developerIds)
         {
             if (User.IsInRole("Admin"))
@@ -88,8 +89,9 @@ namespace Wray_Tracker.Controllers
                         projHelper.AddUserToProject(developerId, projectId);
                     }
                 }
+                db.SaveChanges();
             }
-            return RedirectToAction("Dashboard", "Home");
+            return RedirectToAction("Index");
         }
 
         // Get: Manage Project Assignments
@@ -125,6 +127,7 @@ namespace Wray_Tracker.Controllers
         // Post: Manage Project Assignments
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult ManageProjectAssignments(List<string> userIds, List<int> projectIds)
         {
             // If and only if I have chosen at least one person will I do the following operations...
@@ -154,7 +157,7 @@ namespace Wray_Tracker.Controllers
 
             ViewBag.UserIds = new MultiSelectList(db.Users, "Id", "Email", userIds);
 
-            ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name");
+            ViewBag.ProjectIds = new MultiSelectList(db.Projects, "Id", "Name", userIds);
 
             return View(db.Projects.Find(id));
         }
@@ -162,11 +165,11 @@ namespace Wray_Tracker.Controllers
         // POST: Manage Project Level Users Remove
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult ManageProjectLevelUsersRemove(List<string> userIds, int projectIds)
         {
-            var projMemberIds = projHelper.UsersOnProject(projectIds).Select(u => u.Id).ToList();
 
-            foreach (var memberId in projMemberIds)
+            foreach (var memberId in userIds)
             {
                 projHelper.RemoveUserFromProject(memberId, projectIds);
             }
@@ -191,11 +194,11 @@ namespace Wray_Tracker.Controllers
             }
 
             Project project = db.Projects.Find(id);
-            ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
+            //ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
 
             if (project == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
 
             return View(project);
@@ -215,19 +218,17 @@ namespace Wray_Tracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager")]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,ManagerId")] Project project)
+        public ActionResult Create([Bind(Include = "Id,Name,Description")] Project project)
         {
-
-            
-
             if (ModelState.IsValid)
             {
-                if (project.ManagerId == null)
-                {
-                    project.ManagerId = User.Identity.GetUserId();
-                }
 
+                //if (project.ManagerId == null)
+                //{
+                //    project.ManagerId = User.Identity.GetUserId();
+                //}
 
+                //project.ManagerId = User.Identity.GetUserId(); 
                 project.Created = DateTime.Now;
                 db.Projects.Add(project);
                 db.SaveChanges();

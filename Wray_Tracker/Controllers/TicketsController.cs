@@ -25,6 +25,7 @@ namespace Wray_Tracker.Controllers
         private NotificationHelper notificationHelper = new NotificationHelper();
         private RecordManager recordManager = new RecordManager();
 
+        [Authorize]
         public ActionResult Dashboard(int? id)
         {
             if (id == null)
@@ -40,6 +41,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Tickets
+        [Authorize]
         public ActionResult Index()
         {
             //var tickets = db.Tickets.Include(t => t.Developer).Include(t => t.Project).Include(t => t.Submitter);
@@ -78,10 +80,7 @@ namespace Wray_Tracker.Controllers
         [Authorize(Roles = "Submitter")]
         public ActionResult Create(int? projectId, Ticket ticket)
         {
-            // Need to find a way to have the Developers to be unassigned until actually assigned
-
-
-
+           
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();
             var myProjects = projHelper.ListUserProjects(myUserId);

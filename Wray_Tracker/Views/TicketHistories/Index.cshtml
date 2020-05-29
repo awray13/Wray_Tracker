@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "Index";
-    
+
 }
 
 <h2>Ticket History Dashboard</h2>
@@ -39,8 +39,8 @@
 
             <tr>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.Ticket.SubmitterId)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.Ticket.SubmitterId)
+                    </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.User.FullName)
                 </td>
@@ -59,19 +59,17 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ChangedOn)
                 </td>
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>
+                <td>
 
-                        @Html.ActionLink("Edit | ", "Edit", new { id = item.Id })
+                    @*@Html.ActionLink("Edit | ", "Edit", new { id = item.Id })
                         @Html.ActionLink("Details | ", "Details", new { id = item.Id })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
 
-                    </td>
-                }
-                </tr>
+
+                </td>
+
+            </tr>
 
         }
     </tbody>
-    </table>
+</table>

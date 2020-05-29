@@ -28,7 +28,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="~/Images/favicon-32x32.png" />
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-sm-navbar-fixed layout-sm-footer-not-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-sm-footer-not-fixed">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light elevation-3">
@@ -44,7 +44,6 @@
                     <a href="#" class="nav-link">About</a>
                 </li>
             </ul>
-
             <!-- SEARCH FORM -->
             @*<form class="form-inline ml-3">
                     <div class="input-group input-group-sm">
@@ -73,7 +72,7 @@
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("Id", notification.Id)
                                 <a href="#" class="dropdown-item">
-                                    <!-- Message Start -->
+
                                     <div class="media">
                                         <img src="~/Images/user.svg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                         <div class="media-body">
@@ -84,7 +83,7 @@
                                             <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>@notification.Created.ToString("MMM dd, yyyy")</p>
                                         </div>
                                     </div>
-                                    <!-- Message End -->
+
                                 </a>
                                 <button type="submit" class="btn btn-xs btn-block bg-gradient-orange">Dismiss</button>
                             }
@@ -169,11 +168,11 @@
     <script src="~/Scripts/Chart.min.js"></script>
 
     <!-- AdminLTE App -->
-    <script src="~/Scripts/adminlte.js"></script>
+    @*<script src="~/Scripts/adminlte.js"></script>*@
     <script src="~/Scripts/adminlte.min.js"></script>
 
     <!-- OPTIONAL SCRIPTS -->
-    <script src="~/Scripts/demo.js"></script>
+    @*<script src="~/Scripts/demo.js"></script>*@
 
     <!-- PAGE PLUGINS -->
     <!-- jQuery Mapael -->
@@ -188,7 +187,7 @@
 
 
     <!-- PAGE SCRIPTS -->
-    <script src="~/Scripts/dashboard2.js"></script>
+    @*<script src="~/Scripts/dashboard2.js"></script>*@
 
     <script>
         $(function () {
@@ -267,6 +266,8 @@
             bsCustomFileInput.init();
         });
     </script>
+ 
+
 
     @RenderSection("Scripts", required: false)
 </body>
