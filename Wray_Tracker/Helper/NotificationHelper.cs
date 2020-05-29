@@ -2,8 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
+using System.Web.Mvc;
 using Wray_Tracker.Models;
+using Wray_Tracker.ViewModels;
 
 namespace Wray_Tracker.Helper
 {
@@ -11,18 +16,47 @@ namespace Wray_Tracker.Helper
     public class NotificationHelper
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
-        public void ManageNotifications(Ticket oldTicket, Ticket newTicket)
+        public async Task ManageNotifications(Ticket oldTicket, Ticket newTicket)
         {
             // Manage a Dev assignment notification
-            GenerateAssignmentNotifications(oldTicket, newTicket);
+            await GenerateAssignmentNotifications(oldTicket, newTicket);
 
             // Manage ticket change notifications
-            GenrateTicketChangeNotifications(newTicket);
+            GenerateTicketChangeNotification(newTicket);
+        }
+
+        // Email to Dev about assignment/unassignment
+        private async Task SendEmailAsync(TicketNotification notification)
+        {
+            try
+            {
+                var emailFrom = db.Users.Find(notification.SenderId).Email;
+
+                emailFrom += $"<{WebConfigurationManager.AppSettings["emailfrom"]}>";
+
+                var emailTo = db.Users.Find(notification.RecipientId).Email;
+
+                var email = new MailMessage(emailFrom, emailTo)
+                {
+                    Subject = "Changes Made to Ticket Assigned to You",
+                    Body = notification.NotificationBody,
+                    IsBodyHtml = true
+                };
+
+                var emailSvc = new EmailService();
+                await emailSvc.SendAsync(email);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                await Task.FromResult(0);
+            }
 
         }
 
-        private void GenerateAssignmentNotifications(Ticket oldTicket, Ticket newTicket)
+        private async Task GenerateAssignmentNotifications(Ticket oldTicket, Ticket newTicket)
         {
             bool assigned = oldTicket.DeveloperId == null && newTicket.DeveloperId != null;
             bool unassigned = oldTicket.DeveloperId != null && newTicket.DeveloperId == null;
@@ -32,50 +66,57 @@ namespace Wray_Tracker.Helper
 
             if (assigned)
             {
-                GenerateAssignmentNotifications(newTicket.Id, created, newTicket.DeveloperId);
+                await GenerateAssignmentNotification(newTicket.Id, created, newTicket.DeveloperId);
                 
             }
             else if (unassigned)
             {
-                GenerateUnAssignmentNotifications(newTicket.Id, created, oldTicket.DeveloperId);
+                await GenerateUnAssignmentNotification(newTicket.Id, created, oldTicket.DeveloperId);
             }
             else if (reassigned)
             {
-                GenerateAssignmentNotifications(newTicket.Id, created, newTicket.DeveloperId);
-                GenerateUnAssignmentNotifications(newTicket.Id, created, oldTicket.DeveloperId);
+                await GenerateUnAssignmentNotification(newTicket.Id, created, oldTicket.DeveloperId);
+                await GenerateAssignmentNotification(newTicket.Id, created, newTicket.DeveloperId);
             }
             
         }
 
-        private void GenerateAssignmentNotifications(int id, DateTime created, string recipientId)
+        private async Task GenerateAssignmentNotification(int id, DateTime created, string recipientId)
         {
-            db.TicketNotifications.Add(new TicketNotification
+            var newNotification = new TicketNotification
             {
                 Created = created,
                 TicketId = id,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
                 RecipientId = recipientId,
                 NotificationBody = $"You have been assigned to Ticket Id: {id} on {created.ToString("MMM dd, yyyy")}."
+            };
 
-            });
+            db.TicketNotifications.Add(newNotification);
+
             db.SaveChanges();
+            await SendEmailAsync(newNotification);
         }
 
-        private void GenerateUnAssignmentNotifications(int id, DateTime created, string recipientId)
+        private async Task GenerateUnAssignmentNotification(int id, DateTime created, string recipientId)
         {
-            db.TicketNotifications.Add(new TicketNotification
+            var newNotification = new TicketNotification
             {
                 Created = created,
                 TicketId = id,
                 SenderId = HttpContext.Current.User.Identity.GetUserId(),
                 RecipientId = recipientId,
-                NotificationBody = $"You have been unassigned to Ticket Id: {id} on {created.ToString("MMM dd, yyyy")}."
+                NotificationBody = $"You have been unassigned from Ticket Id: {id} on {created.ToString("MMM dd, yyyy")}."
 
-            });
+            };
+
+            db.TicketNotifications.Add(newNotification);
+
             db.SaveChanges();
+            await SendEmailAsync(newNotification);
         }
 
-        private void GenrateTicketChangeNotifications(Ticket ticket)
+        private void GenerateTicketChangeNotification(Ticket ticket)
         {
             var created = DateTime.Now;
 

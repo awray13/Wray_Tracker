@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Wray_Tracker.Models;
 
@@ -11,10 +12,10 @@ namespace Wray_Tracker.Helper
         private HistoryHelper historyHelper = new HistoryHelper();
         private NotificationHelper notificationHelper = new NotificationHelper();
 
-        public void ManageChangeRecords(Ticket oldTicket, Ticket newTicket)
+        public async Task ManageChangeRecords(Ticket oldTicket, Ticket newTicket)
         {
             historyHelper.ManageHistoryRecordCreation(oldTicket, newTicket);
-            notificationHelper.ManageNotifications(oldTicket, newTicket);
+            await notificationHelper.ManageNotifications(oldTicket, newTicket);
         }
     }
 }

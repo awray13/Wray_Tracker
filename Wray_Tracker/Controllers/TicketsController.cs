@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Wray_Tracker.Helper;
@@ -41,7 +42,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Tickets
-        [Authorize]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Index()
         {
             //var tickets = db.Tickets.Include(t => t.Developer).Include(t => t.Project).Include(t => t.Submitter);
@@ -203,7 +204,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -222,7 +223,8 @@ namespace Wray_Tracker.Controllers
                     var newTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
                     // Holds and maintains historyHelper and notificationHelper
-                    recordManager.ManageChangeRecords(oldTicket, newTicket);
+                    await recordManager.ManageChangeRecords(oldTicket, newTicket);
+
                 }
                 else
                 {

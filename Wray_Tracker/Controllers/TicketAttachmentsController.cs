@@ -34,7 +34,7 @@ namespace Wray_Tracker.Controllers
             TicketAttachment ticketAttachment = db.TicketAttachments.Find(id);
             if (ticketAttachment == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(ticketAttachment);
         }
@@ -72,7 +72,7 @@ namespace Wray_Tracker.Controllers
                 ticketAttachment.UserId = User.Identity.GetUserId();
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
-                return RedirectToAction("Dashboard", "Tickets");
+                return RedirectToAction("Index");
             }
 
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "SubmitterId", ticketAttachment.TicketId);

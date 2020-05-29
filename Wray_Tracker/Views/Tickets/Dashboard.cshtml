@@ -4,8 +4,8 @@
 
 
 <!-- Main content -->
-<section class="content">
-    <div class="container">
+<section class="content-header">
+    <div class="container mt-2">
         <div class="row">
             <div class="col">
                 <!-- Default box -->
@@ -112,7 +112,7 @@
                                                             @*@Html.TextArea("CommentBody")*@
                                                             <input type="text" name="commentBody" placeholder="Type Message ..." class="form-control">
                                                             <span class="input-group-append">
-                                                                <button type="submit" class="btn btn-sm bg-gradient-orange text-white">Add Comment</button>
+                                                                <button type="submit" class="btn btn-sm bg-gradient-orange text-white">Add</button>
                                                             </span>
                                                             @*<button type="submit" class="btn btn-sm bg-gradient-orange text-white">Add Comment</button>*@
                                                         </div>
@@ -130,7 +130,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <h5 class="text-muted">Attachments</h5>
-                                                <input type="file" class="small" name="newAttachment" /><br /><hr />
+
                                                 @foreach (var attachment in Model.Attachments)
                                                 {
                                                     <ul class="list-unstyled">
@@ -144,7 +144,12 @@
                                                 {
                                                     @Html.AntiForgeryToken()
                                                     @Html.Hidden("TicketId", Model.Id)
-                                                    <button type="submit" class="btn btn-sm bg-gradient-orange text-white offset-10">Add Files</button>
+                                                    <br /><hr />
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="newAttachment" id="customFile" />
+                                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                                        <button type="submit" class="btn btn-sm bg-gradient-orange text-white offset-11 mt-1">Add</button>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
