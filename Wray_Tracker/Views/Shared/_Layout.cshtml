@@ -171,9 +171,6 @@
     @*<script src="~/Scripts/adminlte.js"></script>*@
     <script src="~/Scripts/adminlte.min.js"></script>
 
-    <!-- OPTIONAL SCRIPTS -->
-    @*<script src="~/Scripts/demo.js"></script>*@
-
     <!-- PAGE PLUGINS -->
     <!-- jQuery Mapael -->
     <script src="~/Scripts/jquery.mousewheel.js"></script>
@@ -184,31 +181,19 @@
     <!-- Sweet Alerts -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
-
-
-    <!-- PAGE SCRIPTS -->
-    @*<script src="~/Scripts/dashboard2.js"></script>*@
-
     <script>
-        $(function () {
-            //-------------
-            //- DONUT CHART -
-            //-------------
-            // Get context with jQuery - using jQuery's .get() method.
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetTicketPriorityChartData", "Chart")',
+            dataType: "json"
+        }).then(function (response) {
             var donutChartCanvas = $('#pieChart').get(0).getContext('2d');
             var donutData = {
-                labels: [
-                    'Chrome',
-                    'IE',
-                    'FireFox',
-                    'Safari',
-                    'Opera',
-                    'Navigator',
-                ],
+                labels: response.Labels,
                 datasets: [
                     {
-                        data: [700, 500, 400, 600, 300, 100],
-                        backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                        data: response.Data,
+                        backgroundColor: response.Colors
                     }
                 ]
             };
@@ -218,29 +203,84 @@
             };
             //Create pie or douhnut chart
             // You can switch between pie and douhnut using the method below.
-            var donutChart = new Chart(donutChartCanvas, {
+            var pieChart = new Chart(donutChartCanvas, {
                 type: 'pie',
                 data: donutData,
                 options: donutOptions
             });
-            //-------------
-            //- PIE CHART -
-            //-------------
-            // Get context with jQuery - using jQuery's .get() method.
-            var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-            var pieData = donutData;
-            var pieOptions = {
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetTicketStatusChartData", "Chart")',
+            dataType: "json"
+        }).then(function (response) {
+            var donutChartCanvas = $('#pieChart2').get(0).getContext('2d');
+            var donutData = {
+                labels: response.Labels,
+                datasets: [
+                    {
+                        data: response.Data,
+                        backgroundColor: response.Colors
+                    }
+                ]
+            };
+            var donutOptions = {
                 maintainAspectRatio: false,
                 responsive: true,
             };
             //Create pie or douhnut chart
             // You can switch between pie and douhnut using the method below.
-            var pieChart = new Chart(pieChartCanvas, {
+            var pieChart = new Chart(donutChartCanvas, {
                 type: 'pie',
-                data: pieData,
-                options: pieOptions
+                data: donutData,
+                options: donutOptions
             });
         });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetTicketTypeChartData", "Chart")',
+            dataType: "json"
+        }).then(function (response) {
+            var donutChartCanvas = $('#pieChart3').get(0).getContext('2d');
+            var donutData = {
+                labels: response.Labels,
+                datasets: [
+                    {
+                        data: response.Data,
+                        backgroundColor: response.Colors
+                    }
+                ]
+            };
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            };
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            var pieChart = new Chart(donutChartCanvas, {
+                type: 'pie',
+                data: donutData,
+                options: donutOptions
+            });
+        });
+            //-------------
+            //- PIE CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            //var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+            //var pieData = donutData;
+            //var pieOptions = {
+            //    maintainAspectRatio: false,
+            //    responsive: true,
+            //};
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+        //    var pieChart = new Chart(pieChartCanvas, {
+        //        type: 'pie',
+        //        data: pieData,
+        //        options: pieOptions
+        //    });
+        //});
     </script>
 
     <script>
