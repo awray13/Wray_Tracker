@@ -2,19 +2,20 @@
 @{
     ViewBag.Title = "AssignUsers";
 }
-
+<section class="content">
     <div class="container">
         <div class="row card card-navy">
             <div class="col">
-                <h2 class="card-header">AssignUsers</h2>
+                <h2 class="card-header">Assign Users</h2>
                 @using (Html.BeginForm())
                 {
 
                     @Html.AntiForgeryToken()
                     @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
+
                     if (User.IsInRole("Admin"))
                     {
-                        @Html.DropDownList("ProjectManagerId", null, "- Select Project Manager -", new { @class = "custom-select"})
+                        @Html.DropDownList("ManagerId", null, "-Select Project Manager-", new { @class = "custom-select"})
 
                     }
                     else
@@ -40,53 +41,52 @@
         </div>
 
         @*<div class="row card">
-            <div class="col">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayName("Full Name")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Email")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Role Name")
-                            </th>
-                            <th>
-                                @Html.DisplayName("Projects")
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model)
-                        {
+                <div class="col">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(model => user.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => user.Email)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => user.RoleName)
-                                </td>
-                                <td>
-                                    @foreach (var projName in user.ProjectNames)
-                                    {
-                                        @projName
-                                        <br />
-                                    }
-                                </td>
+                                <th>
+                                    @Html.DisplayName("Full Name")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Email")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Role Name")
+                                </th>
+                                <th>
+                                    @Html.DisplayName("Projects")
+                                </th>
                             </tr>
-                        }
-                    </tbody>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => user.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => user.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => user.RoleName)
+                                    </td>
+                                    <td>
+                                        @foreach (var projName in user.ProjectNames)
+                                        {
+                                            @projName
+                                            <br />
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
 
 
-                </table>
-            </div>
-        </div>*@
+                    </table>
+                </div>
+            </div>*@
 
     </div>
-
-
+</section>

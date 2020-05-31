@@ -31,7 +31,7 @@ namespace Wray_Tracker.Controllers
             if (User.IsInRole("Admin"))
             {
                 var pmId = db.Projects.FirstOrDefault(p => p.Id == projectId).ManagerId;
-                ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); // has fourth parameter showing
+                ViewBag.ManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); 
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Wray_Tracker.Controllers
                 ViewBag.DeveloperIds = new MultiSelectList(roleHelper.UsersInRole("Developer"), "Id", "FullName", devIds); // has fourth parameter showing
 
             }
-            return View(projectId);
+            return View();
         }
 
         [HttpPost]

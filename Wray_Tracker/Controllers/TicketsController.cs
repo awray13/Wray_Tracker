@@ -124,7 +124,7 @@ namespace Wray_Tracker.Controllers
                 ticket.Created = DateTime.Now;
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard", "Home");
             }
             // I need to somehow produce a list of only my Projects and then put that list into the SelectList
             var myUserId = User.Identity.GetUserId();

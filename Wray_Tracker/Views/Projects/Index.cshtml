@@ -31,18 +31,6 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.Description)
                                     </th>
-                                    @*<th>
-                                            @Html.DisplayName("Project Manager")
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Created)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Updated)
-                                        </th>*@
-                                    @*<th>
-                                            @Html.DisplayNameFor(model => model.IsArchived)
-                                        </th>*@
                                     <th></th>
                                 </tr>
                             </thead>
@@ -56,23 +44,6 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Description)
                                         </td>
-                                        @*<td>
-                                                @{
-                                                    var pm = db.Users.Find(item.ManagerId);
-                                                    var pmName = pm != null ? pm.FullName : "Unassigned";
-                                                }
-
-                                                @pmName
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Created)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Updated)
-                                            </td>*@
-                                        @*<td>
-                                                @Html.DisplayFor(modelItem => item.IsArchived)
-                                            </td>*@
                                         <td>
                                             @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                             {

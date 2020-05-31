@@ -23,8 +23,6 @@ namespace Wray_Tracker.Models
 
         public bool IsArchived { get; set; }
 
-        //public virtual ApplicationUser Manager { get; set; }
-
         public virtual ICollection<ApplicationUser> Users { get; set; }
 
         public virtual ICollection<Ticket> Tickets { get; set; }
