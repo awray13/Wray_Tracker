@@ -20,6 +20,7 @@ namespace Wray_Tracker.Controllers
         private UserProjectHelper projHelper = new UserProjectHelper();
         private UserRoleHelper roleHelper = new UserRoleHelper();
         private AssignmentHelper assignHelper = new AssignmentHelper();
+        private TicketHelper ticketHelper = new TicketHelper();
 
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult AssignUsers(int projectId)
@@ -30,7 +31,7 @@ namespace Wray_Tracker.Controllers
             if (User.IsInRole("Admin"))
             {
                 var pmId = db.Projects.FirstOrDefault(p => p.Id == projectId).ManagerId;
-                ViewBag.ProjectManagerid = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); // has fourth parameter showing
+                ViewBag.ProjectManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); // has fourth parameter showing
             }
             else
             {
@@ -77,7 +78,7 @@ namespace Wray_Tracker.Controllers
                 }
 
                 // Remove all Devs on Project
-                foreach (var user in assignHelper.UsersOnProjectInRole(projectId, "Submitter"))
+                foreach (var user in assignHelper.UsersOnProjectInRole(projectId, "Developer"))
                 {
                     projHelper.RemoveUserFromProject(user.Id, projectId);
                 }
@@ -91,7 +92,7 @@ namespace Wray_Tracker.Controllers
                 }
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // Get: Manage Project Assignments
@@ -99,6 +100,7 @@ namespace Wray_Tracker.Controllers
         public ActionResult ManageProjectAssignments()
         {
             var emptyCustomUserDataList = new List<CustomUserData>();
+
             // I have decided that it should work this way...
             var users = db.Users.ToList();
 
@@ -178,7 +180,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // GET: Projects
-        [Authorize]
+        [Authorize(Roles = "Admin, Manager")]
         public ActionResult Index()
         {
             return View(db.Projects.ToList());
@@ -192,15 +194,14 @@ namespace Wray_Tracker.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
 
             Project project = db.Projects.Find(id);
-            //ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
 
             if (project == null)
             {
                 return View("Error");
             }
-
             return View(project);
         }
 
@@ -218,7 +219,7 @@ namespace Wray_Tracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager")]
-        public ActionResult Create([Bind(Include = "Id,Name,Description")] Project project)
+        public ActionResult Create([Bind(Include ="Id,Name,Description")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -249,7 +250,7 @@ namespace Wray_Tracker.Controllers
             Project project = db.Projects.Find(id);
             if (project == null)
             {
-                return HttpNotFound();
+                return View("Error");
             }
             return View(project);
         }
@@ -259,6 +260,7 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "Id,Name,Description,ManagerId,Created,Updated,IsArchived")] Project project)
         {
             if (ModelState.IsValid)

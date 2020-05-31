@@ -14,7 +14,7 @@
                     @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
                     if (User.IsInRole("Admin"))
                     {
-                        @Html.DropDownList("ProjectManagerId", "- Select Project Manager -")
+                        @Html.DropDownList("ProjectManagerId", null, "- Select Project Manager -", new { @class = "custom-select"})
 
                     }
                     else
@@ -30,7 +30,6 @@
                             </div>
                         </div>
                     }
-
                     <div class="row">
                         <div class="col">
                             <button type="submit" style="margin: 10px;" class="btn btn-info">Assign</button>

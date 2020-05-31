@@ -17,9 +17,9 @@ namespace Wray_Tracker.Controllers
         {
             var colorList = new List<string>();
             colorList.Add("#f56954");
-            colorList.Add("#00a65a");
+            colorList.Add("#8d3efa");
             colorList.Add("#f39c12");
-            colorList.Add("#00c0ef");
+            colorList.Add("#fa3e47");
             colorList.Add("#3c8dbc");
             colorList.Add("#d2d6de");
             colorList.Add("#03fcf4");
@@ -30,16 +30,13 @@ namespace Wray_Tracker.Controllers
             var pieChartVM = new PieChartVM();
             var priorities = db.TicketPriorities.ToList();
 
-            var dataKey = 0;
-
-            pieChartVM.Data.Insert(dataKey, "Tickets");
-
             foreach (var priority in priorities)
             {
-                dataKey++;
 
                 var count = db.Tickets.Where(t => t.TicketPriorityId == priority.Id).Count();
-                pieChartVM.Data.Insert(dataKey, count.ToString());
+                count++;
+
+                pieChartVM.Data.Add(count);
                 pieChartVM.Labels.Add(priority.Name);
                 pieChartVM.Colors.Add(colorList[rand.Next(0, colorList.Count)]);
             }
@@ -51,14 +48,14 @@ namespace Wray_Tracker.Controllers
         public JsonResult GetTicketStatusChartData()
         {
             var colorList = new List<string>();
-            colorList.Add("#f56954");
-            colorList.Add("#00a65a");
-            colorList.Add("#f39c12");
-            colorList.Add("#00c0ef");
+            colorList.Add("#3bcc3e");
+            colorList.Add("#3b42cc");
+            colorList.Add("#f743b2");
+            colorList.Add("#9741f2");
             colorList.Add("#3c8dbc");
             colorList.Add("#d2d6de");
-            colorList.Add("#03fcf4");
-            colorList.Add("#886896");
+            colorList.Add("#4287f5");
+            colorList.Add("#e6f542");
 
             var rand = new Random();
 
@@ -67,14 +64,15 @@ namespace Wray_Tracker.Controllers
 
             var dataKey = 0;
 
-            pieChartVM.Data.Insert(dataKey, "Tickets");
+            pieChartVM.Data.Add(dataKey);
 
             foreach (var status in statuses)
             {
-                dataKey++;
 
                 var count = db.Tickets.Where(t => t.TicketStatusId == status.Id).Count();
-                pieChartVM.Data.Insert(dataKey, count.ToString());
+                count++;
+
+                pieChartVM.Data.Add(count);
                 pieChartVM.Labels.Add(status.Name);
                 pieChartVM.Colors.Add(colorList[rand.Next(0, colorList.Count)]);
             }
@@ -86,30 +84,28 @@ namespace Wray_Tracker.Controllers
         public JsonResult GetTicketTypeChartData()
         {
             var colorList = new List<string>();
-            colorList.Add("#f56954");
-            colorList.Add("#00a65a");
-            colorList.Add("#f39c12");
-            colorList.Add("#00c0ef");
-            colorList.Add("#3c8dbc");
-            colorList.Add("#d2d6de");
-            colorList.Add("#03fcf4");
-            colorList.Add("#886896");
+            colorList.Add("#f2453f");
+            colorList.Add("#f7c23b");
+            colorList.Add("#bde851");
+            colorList.Add("#fca63d");
+            colorList.Add("#4ee2f2");
+            colorList.Add("#4070f5");
+            colorList.Add("#b43bff");
+            colorList.Add("#fc3d79");
 
             var rand = new Random();
 
             var pieChartVM = new PieChartVM();
             var types = db.TicketTypes.ToList();
 
-            var dataKey = 0;
-
-            pieChartVM.Data.Insert(dataKey, "Tickets");
 
             foreach (var type in types)
             {
-                dataKey++;
 
                 var count = db.Tickets.Where(t => t.TicketTypeId == type.Id).Count();
-                pieChartVM.Data.Insert(dataKey, count.ToString());
+                count++;
+
+                pieChartVM.Data.Add(count);
                 pieChartVM.Labels.Add(type.Name);
                 pieChartVM.Colors.Add(colorList[rand.Next(0, colorList.Count)]);
             }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Wray_Tracker.Models;
 
 namespace Wray_Tracker.ViewModels
 {
@@ -21,12 +22,21 @@ namespace Wray_Tracker.ViewModels
 
         public List<string> Tickets { get; set; }
 
+        public ICollection<Project> Projects { get; set; }
+
         public string FullName 
         {
             get
             {
                 return $"{LastName}, {FirstName}"; 
             }
+        }
+
+        public CustomUserData()
+        {
+            ProjectNames = new List<string>();
+            Tickets = new List<string>();
+            Projects = new List<Project>();
         }
 
 

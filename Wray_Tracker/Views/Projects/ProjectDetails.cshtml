@@ -1,66 +1,140 @@
-﻿@model Wray_Tracker.Models.Project
-
+﻿@using Wray_Tracker.ViewModels
+@using Wray_Tracker.Helper
+@using Wray_Tracker.Models
+@model Project
+    
 @{
-    ViewBag.Title = "ProjectDetails";
-}
+    DashboardVM dashboardVM = new DashboardVM();
+    CustomUserData userData = new CustomUserData();
+    UserProjectHelper projectHelper = new UserProjectHelper();
+    UserRoleHelper roleHelper = new UserRoleHelper();
 
-<h2>Details</h2>
 
-<div>
-    <h4>Project Dashboard</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+ }
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+<!-- Main content -->
+<section class="content-header">
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-orange text-white">
+                        <h5 class="mx-3 mt-2 mb-0">Details for Project #@Model.Id</h5>
+                        <p class="text-sm mx-sm-4">
+                            @Html.ActionLink("Edit |", "Edit", new { id = Model.Id }, new { @class = "text-gray" })
+                            @Html.ActionLink(" Back to List", "Index", null, new { @class = "text-gray" })
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Project Name</h6>
+                                        <p class="text-muted">@Model.Name</p>
+                                    </div>
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Ticket Description</h6>
+                                        <p class="text-muted">@Model.Description</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="mx-3 mt-n2 elevation-2 bg-gradient-orange text-white">
+                                                <h5 class="mx-3 mt-2 mb-0">Assigned Members</h5>
+                                                <p class="text-sm mx-sm-4">Current Users for this Project</p>
+                                            </div>
+                                                <div class="card-body">
+                                                    <table class="table table-valign-middle border-bottom">
+                                                        <thead class="table-head-fixed ">
+                                                            <tr>
+                                                                <th>
+                                                                    @Html.DisplayName("Name")
+                                                                </th>
+                                                                <th>
+                                                                    @Html.DisplayName("Email")
+                                                                </th>
+                                                                <th>
+                                                                    @Html.DisplayName("Role")
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.Users)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @Html.DisplayFor(model => item.FullName)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(model => item.Email)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(model => item.Roles)
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                        </div>
+                                    </div>
 
-        <dt>
-            Project Manager
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ManagerId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsArchived)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsArchived)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="mx-3 mt-n2 elevation-2 bg-gradient-orange text-white">
+                                                <h5 class="mx-3 mt-2 mb-0">Tickets for this Project </h5>
+                                                <p class="text-sm mx-sm-4">Condensed Ticket Details</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-valign-middle border-bottom">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                @Html.DisplayName("Title")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("Submitter")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("Developer")
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in dashboardVM.AllTickets)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @Html.DisplayFor(model => item.Title)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(model => item.Submitter)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(model => item.Developer)
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

@@ -8,7 +8,7 @@ namespace Wray_Tracker.ViewModels
 {
     public class PieChartVM
     {
-        public ArrayList Data = new ArrayList();
+        public List<int> Data = new List<int>();
         public List<string> Colors = new List<string>();
         public List<string> Labels = new List<string>();
 

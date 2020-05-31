@@ -1,72 +1,64 @@
 ﻿@using Wray_Tracker.Helper;
 @model IEnumerable<Wray_Tracker.ViewModels.CustomUserData>
-@{
-    ViewBag.Title = "Manage Roles";
-
-}
 
 @{ ColorHelper colorHelper = new ColorHelper(); }
 
-<h2>@ViewBag.Title</h2>
 
-<div class="container-fluid">
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
+<section class="content">
+    <div class="container-fluid">
+        <h2 class="text-muted">Manage User Roles</h2>
         <div class="row">
-            @* Left column that holds the users *@
-            <div class="col">
-                @Html.ListBox("UserIds", null, new { @class = "custom-select multiple" })
-            </div>
-
-            @* Right column for holding my Roles *@
-            <div class="col">
-                @Html.DropDownList("RoleName", null, new { @class = "custom-select multiple" })
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col">
-                <button type="submit" class="btn btn-primary" style="">Manage Roles</button>
-            </div>
-        </div>
-     }
-
-    <hr />
-
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayName("Full Name")
-                </th>
-                <th>
-                    @Html.DisplayName("Email")
-                </th>
-                <th>
-                    @Html.DisplayName("Role Name")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in Model)
+            @using (Html.BeginForm())
             {
-                <tr>
-                    <td class="@colorHelper.GetUserColorClass(user.RoleName)">
-                        @Html.DisplayFor(model => user.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => user.Email)
-                    </td>
-                    <td class="@colorHelper.GetUserColorClass(user.RoleName)">
-                        @Html.DisplayFor(model => user.RoleName)
-                    </td>
-                </tr>
+                @Html.AntiForgeryToken()
+
+                @* Left column that holds the users *@
+                <div class="col">
+                    <span class="text-muted">Select 1 or more Users</span>
+                    @Html.ListBox("UserIds", null, new { @class = "custom-select multiple" })
+                    <hr />
+                    @* Right column for holding my Roles *@
+                    <span class="text-muted">Select the Role to Assign</span>
+                    @Html.DropDownList("RoleName", null, "-- Select Role --", new { @class = "custom-select multiple" })
+                    <br />
+                    <br />
+                    <button type="submit" class="btn btn-primary" style="">Manage Roles</button>
+                    <br />
+                </div>
             }
-
-        </tbody>
-     </table>
-</div>
-
+            <div class="col">
+                <table class="table table-valign-middle border-bottom">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Full Name")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Email")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Role Name")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td class="@colorHelper.GetUserColorClass(user.RoleName)">
+                                    @Html.DisplayFor(model => user.FullName)
+                                </td>
+                                <td class="@colorHelper.GetUserColorClass(user.RoleName)">
+                                    @Html.DisplayFor(model => user.Email)
+                                </td>
+                                <td class="@colorHelper.GetUserColorClass(user.RoleName)">
+                                    @Html.DisplayFor(model => user.RoleName)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

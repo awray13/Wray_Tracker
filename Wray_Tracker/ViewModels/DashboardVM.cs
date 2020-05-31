@@ -14,7 +14,13 @@ namespace Wray_Tracker.ViewModels
 
         public ICollection<Ticket> AllTickets { get; set; }
 
+        public ICollection<Project> AllProjects { get; set; }
+
         public ICollection<TicketHistory> AllTicketHistory { get; set; }
+
+        public ICollection<CustomUserData> UserData { get; set; }
+
+        public string Id { get; set; }
 
         public int TicketCount { get; set; }
 
@@ -27,6 +33,7 @@ namespace Wray_Tracker.ViewModels
         public string RoleNames { get; set; }
 
         public ProjectVM ProjectVM { get; set; }
+        
 
         public DashboardVM()
         {
@@ -34,7 +41,10 @@ namespace Wray_Tracker.ViewModels
             MyTickets = new List<Ticket>();
             AllTickets = new List<Ticket>();
             AllTicketHistory = new List<TicketHistory>();
+            AllProjects = new List<Project>();
+            UserData = new List<CustomUserData>();
             ProjectVM = new ProjectVM();
+            
             
 
 

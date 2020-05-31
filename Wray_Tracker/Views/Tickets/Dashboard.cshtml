@@ -1,4 +1,5 @@
 ﻿@using Wray_Tracker.Models
+@using Wray_Tracker.ViewModels
 @model Ticket
 
 
@@ -32,7 +33,29 @@
                                 </div>
                                 <hr />
                                 <div class="row">
-                                    <div class="col-12 col-sm-4">
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Project</h6>
+                                        <p class="text-muted">@Model.Project.Name</p>
+                                    </div>
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Ticket Status</h6>
+                                        <p class="text-muted">@Model.TicketStatus.Name</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Ticket Priority</h6>
+                                        <p class="text-muted">@Model.TicketPriority.Name</p>
+                                    </div>
+                                    <div class="col">
+                                        <h6 class="text-uppercase">Ticket Type</h6>
+                                        <p class="text-muted">@Model.TicketType.Name</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col">
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-number text-center text-muted">Developer</span>
@@ -48,7 +71,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-4">
+                                    <div class="col">
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-number text-center text-muted">Submitter</span>
@@ -56,11 +79,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-4">
+                                    <div class="col">
                                         <div class="info-box bg-light">
                                             <div class="info-box-content">
                                                 <span class="info-box-number text-center text-muted">Created</span>
-                                                <span class="info-box-text text-center text-muted mb-0">@Model.Created.ToString("MMM dd, yyyy")</span>
+                                                <span class="info-box-text text-center text-muted mb-0">@Model.Created</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-number text-center text-muted">Updated</span>
+                                                <span class="info-box-text text-center text-muted mb-0">@Model.Updated</span>
                                             </div>
                                         </div>
                                     </div>
@@ -148,9 +179,64 @@
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input" name="newAttachment" id="customFile" />
                                                         <label class="custom-file-label" for="customFile">Choose file</label>
-                                                        <button type="submit" class="btn btn-sm bg-gradient-orange text-white offset-11 mt-1">Add</button>
+                                                        <button type="submit" class="btn btn-sm bg-gradient-orange text-white mt-1">Add</button>
                                                     </div>
                                                 }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="mx-3 mt-n2 elevation-2 bg-gradient-navy text-white">
+                                                <h5 class="mx-3 mt-2 mb-0">Ticket History</h5>
+                                                <p class="text-sm mx-sm-4">All History for this Ticket</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-valign-middle border-bottom">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                @Html.DisplayName("Changed By")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("Property")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("OldValue")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("NewValue")
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayName("ChangedOn")
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.Histories)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.User.FullName)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.Property)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.OldValue)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.NewValue)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.DisplayFor(modelItem => item.ChangedOn)
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

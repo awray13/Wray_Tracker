@@ -4,98 +4,106 @@
 @model IEnumerable<TicketIndexVM>
 
 @{
-    ViewBag.Title = "Index";
 
     var colorHelper = new ColorHelper();
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayName("Developer")
-            </th>
-            <th>
-                @Html.DisplayName("Project")
-            </th>
-            <th>
-                @Html.DisplayName("Submitter")
-            </th>
-            <th>
-                @Html.DisplayName("Type")
-            </th>
-            <th>
-                @Html.DisplayName("Status")
-            </th>
-            <th>
-                @Html.DisplayName("Priority")
-            </th>
-            <th>
-                @Html.DisplayName("Title")
-            </th>
-            <th>
-                @Html.DisplayName("Description")
-            </th>
-            <th>
-                @Html.DisplayName("Created")
-            </th>
-            <th>
-                @Html.DisplayName("Updated")
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.IsArchived)
-            </th>*@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<section class="content">
+    <div class="container">
+        @if (User.IsInRole("Submitter"))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Developer.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Project.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Submitter.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.TicketType.Name)
-                </td>
-                <td class="@ColorHelper.GetStatusColorClass(item.Ticket.TicketStatus.Name)">
-                    @Html.DisplayFor(modelItem => item.Ticket.TicketStatus.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.TicketPriority.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ticket.Updated)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.IsArchived)
-                </td>*@
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Ticket.Id }) |
-                    @Html.ActionLink("Ticket Dashboard", "Dashboard", new { id = item.Ticket.Id })
-                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                </td>
-            </tr>
+            <div class="row">
+                <div class="col mt-3">
+                    <p>
+                        <button class="btn btn-sm bg-gradient-orange">@Html.ActionLink("Create New Ticket", "Create", null, new { @class = "text-white" })</button>
+                    </p>
+
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+        <div class="row">
+            <div class="col mt-4">
+                <div class="card">
+                    <div class="mx-3 mt-n2 elevation-2 bg-gradient-navy text-white">
+                        <h5 class="mx-3 mt-2 mb-0">All Tickets</h5>
+                        <p class="text-sm mx-sm-4">A Condensed View of All Tickets</p>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-valign-middle border-bottom">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayName("Title")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Description")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Submitter")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Status")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Priority")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayName("Created")
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.Submitter.Email)
+                                        </td>
+                                        <td class="@ColorHelper.GetStatusColorClass(item.Ticket.TicketStatus.Name)">
+                                            @Html.DisplayFor(modelItem => item.Ticket.TicketStatus.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.TicketPriority.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Ticket.Created)
+                                        </td>
+                                        <td>
+                                            <nav>
+                                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                                    <li class=" nav-item has-treeview">
+                                                        <a href="#" class="nav-link">
+                                                            <p>
+                                                                More Options
+                                                                <i class="fas fa-angle-down"></i>
+                                                            </p>
+                                                        </a>
+                                                        <ul class="nav nav-treeview">
+                                                            <li class="nav-item">
+                                                                @*@Html.ActionLink("Manage Members", "ManageProjectAssignments", new { id = item.Id }, new { @class = "nav-link" })*@
+                                                                @Html.ActionLink("Edit", "Edit", new { id = item.Ticket.Id }, new { @class = "nav-link" })
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                @Html.ActionLink("Ticket Dashboard", "Dashboard", new { id = item.Ticket.Id }, new { @class = "nav-link" })
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

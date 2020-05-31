@@ -14,7 +14,7 @@
             </div>
         }
         <div class="row">
-            <div class="col-md-12">
+            <div class="col mt-4">
                 <div class="card">
                     <div class="mx-3 mt-n2 elevation-2 bg-gradient-orange text-white">
                         <h5 class="mx-3 mt-2 mb-0">All Projects</h5>
@@ -23,7 +23,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table class="table table-valign-middle border-bottom">
-                            <thead class="table-head-fixed">
+                            <thead>
                                 <tr>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Name)
@@ -47,10 +47,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    var db = new ApplicationDbContext();
-                                }
-
                                 @foreach (var item in Model)
                                 {
                                     <tr>
@@ -91,7 +87,8 @@
                                                             </a>
                                                             <ul class="nav nav-treeview">
                                                                 <li class="nav-item">
-                                                                    @Html.ActionLink("Manage Members", "ManageProjectAssignments", new { id = item.Id }, new { @class = "nav-link" })
+                                                                    @*@Html.ActionLink("Manage Members", "ManageProjectAssignments", new { id = item.Id }, new { @class = "nav-link" })*@
+                                                                    @Html.ActionLink("Assign Users", "AssignUsers", new { projectId = item.Id }, new { @class = "nav-link"})
                                                                 </li>
                                                                 <li class="nav-item">
                                                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "nav-link" })
@@ -99,20 +96,7 @@
                                                                 <li class="nav-item">
                                                                     @Html.ActionLink("Project Details", "ProjectDetails", new { id = item.Id }, new { @class = "nav-link" })
                                                                 </li>
-
                                                             </ul>
-                                                        </li>
-                                                        @*@Html.ActionLink("Assign Users |", "AssignUsers", new { projectId = item.Id })*@
-                                                    </ul>
-                                                </nav>
-                                            }
-
-                                            @if (User.IsInRole("Submitter"))
-                                            {
-                                                <nav>
-                                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                                        <li class="nav-item">
-                                                            @Html.ActionLink("Create Ticket", "Create", "Tickets", new { id = item.Id }, new { @class = "nav-link" })
                                                         </li>
                                                     </ul>
                                                 </nav>
