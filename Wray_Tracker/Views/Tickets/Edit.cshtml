@@ -9,7 +9,10 @@
                 <div class="card">
                     <div class="mx-3 mt-n2 elevation-2 bg-gradient-navy text-white">
                         <h5 class="mx-3 mt-2 mb-0">Edit Ticket #@Model.Id</h5>
-                        <p class="text-sm mx-sm-4">@Html.ActionLink("Back to List", "Index", null, new { @class = "text-white" })</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <p class="text-sm mx-sm-4">@Html.ActionLink("Back to List", "Index", null, new { @class = "text-white" })</p>
+                        }
                     </div>
                     <div class="card-body">
                         @using (Html.BeginForm())

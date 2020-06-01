@@ -53,11 +53,6 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <h6 class="text-uppercase">Project Manager</h6>
-                                                        <p class="text-muted">@Html.DisplayFor(model => Model.Users)</p>
-                                                        <hr />
-                                                        <h6 class="text-uppercase">Developers and Submitters</h6>
-                                                        <p class="text-muted"></p>
                                                         <table class="table table-valign-middle border-bottom">
                                                             <thead>
                                                                 <tr>
@@ -73,7 +68,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach (var item in dashboardVM.UserData)
+                                                                @foreach (var item in Model.Users)
                                                                 {
                                                                     <tr>
                                                                         <td>
@@ -83,7 +78,7 @@
                                                                             @Html.DisplayFor(model => item.Email)
                                                                         </td>
                                                                         <td>
-                                                                            @Html.DisplayFor(model => item.RoleName)
+                                                                            @Html.DisplayFor(model => item.Roles)
                                                                         </td>
                                                                     </tr>
                                                                 }
@@ -116,17 +111,17 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach (var item in dashboardVM.AllTickets)
+                                                        @foreach (var item in Model.Tickets)
                                                         {
                                                             <tr>
                                                                 <td>
                                                                     @Html.DisplayFor(model => item.Title)
                                                                 </td>
                                                                 <td>
-                                                                    @Html.DisplayFor(model => item.Submitter)
+                                                                    @Html.DisplayFor(model => item.Submitter.FullName)
                                                                 </td>
                                                                 <td>
-                                                                    @Html.DisplayFor(model => item.Developer)
+                                                                    @Html.DisplayFor(model => item.Developer.FullName)
                                                                 </td>
                                                             </tr>
                                                         }
