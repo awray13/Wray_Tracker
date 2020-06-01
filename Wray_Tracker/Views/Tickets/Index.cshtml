@@ -75,27 +75,30 @@
                                             @Html.DisplayFor(modelItem => item.Ticket.Created)
                                         </td>
                                         <td>
-                                            <nav>
-                                                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                                    <li class=" nav-item has-treeview">
-                                                        <a href="#" class="nav-link">
-                                                            <p>
-                                                                More Options
-                                                                <i class="fas fa-angle-down"></i>
-                                                            </p>
-                                                        </a>
-                                                        <ul class="nav nav-treeview">
-                                                            <li class="nav-item">
-                                                                @*@Html.ActionLink("Manage Members", "ManageProjectAssignments", new { id = item.Id }, new { @class = "nav-link" })*@
-                                                                @Html.ActionLink("Edit", "Edit", new { id = item.Ticket.Id }, new { @class = "nav-link" })
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                @Html.ActionLink("Ticket Dashboard", "Dashboard", new { id = item.Ticket.Id }, new { @class = "nav-link" })
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </nav>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <nav>
+                                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                                        <li class=" nav-item has-treeview">
+                                                            <a href="#" class="nav-link">
+                                                                <p>
+                                                                    More Options
+                                                                    <i class="fas fa-angle-down"></i>
+                                                                </p>
+                                                            </a>
+                                                            <ul class="nav nav-treeview">
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Ticket.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Ticket Dashboard", "Dashboard", new { id = item.Ticket.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            }
+
                                         </td>
                                     </tr>
                                 }

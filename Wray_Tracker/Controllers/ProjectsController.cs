@@ -30,7 +30,7 @@ namespace Wray_Tracker.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                var pmId = db.Projects.FirstOrDefault(p => p.Id == projectId).ManagerId;
+                var pmId = db.Projects.AsNoTracking().FirstOrDefault(p => p.Id == projectId).ManagerId;
                 ViewBag.ManagerId = new SelectList(roleHelper.UsersInRole("Manager"), "Id", "FullName", pmId); 
             }
             else
@@ -194,14 +194,13 @@ namespace Wray_Tracker.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //ViewBag.PMName = db.Users.Find(project.ManagerId).FullName;
 
             Project project = db.Projects.Find(id);
-
             if (project == null)
             {
                 return View("Error");
             }
+
             return View(project);
         }
 
@@ -261,7 +260,7 @@ namespace Wray_Tracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,ManagerId,Created,Updated,IsArchived")] Project project)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,ManagerId,Created")] Project project)
         {
             if (ModelState.IsValid)
             {

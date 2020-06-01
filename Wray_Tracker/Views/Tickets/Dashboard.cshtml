@@ -14,8 +14,12 @@
                     <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
                         <h5 class="mx-3 mt-2 mb-0">Details for Ticket #@Model.Id</h5>
                         <p class="text-sm mx-sm-4">
-                            @Html.ActionLink("Edit |", "Edit", new { id = Model.Id }, new { @class = "text-gray" })
-                            @Html.ActionLink(" Back to List", "Index", null, new { @class = "text-gray" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "text-white" })
+                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                               @Html.ActionLink("| Back to List", "Index", null, new { @class = "text-white" })
+                            }
+
                         </p>
                     </div>
                     <div class="card-body">

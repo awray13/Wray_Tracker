@@ -204,13 +204,14 @@ namespace Wray_Tracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,SubmitterId,DeveloperId,Title,Description,Created,Updated,IsArchived")] Ticket ticket)
+        [Authorize]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,ProjectId,TicketTypeId,TicketStatusId,TicketPriorityId,SubmitterId,DeveloperId,Title,Description,Created,")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 var userId = User.Identity.GetUserId();
                 var user = db.Users.Find(userId);
-                if (User.IsInRole("Developer") && userId == ticket.DeveloperId || User.IsInRole("Admin") || User.IsInRole("Manager") && ticket.Project.ManagerId == userId || User.IsInRole("Submitter") && userId == ticket.SubmitterId)
+                if (User.IsInRole("Developer") && userId == ticket.DeveloperId || User.IsInRole("Admin") || User.IsInRole("Manager") && user.Projects.Any(p => p.Id == ticket.ProjectId) || User.IsInRole("Submitter") && userId == ticket.SubmitterId)
                 {
                     // I want to use AsNoTracking() to get a Momento Ticket object
                     // clean disconnected view

@@ -57,33 +57,18 @@
                                     <p>My Dashboard</p>
                                 </a>
                             </li>
-
-
-
-
                         </ul>*@
                 </li>
+
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
+                        <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
                             <i class="nav-icon fas fa-user-ninja"></i>
                             <p>
-                                Admin
-                                <i class="fas fa-angle-left right"></i>
+                                Manage User Roles
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-
-                            <li class="nav-item">
-                                <a href="@Url.Action("ManageRoles", "Admin")" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Manage Roles</p>
-                                </a>
-                            </li>
-
-                        </ul>
-
                     </li>
                 }
                 <!-- Projects dropdown nav list -->
@@ -99,21 +84,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="@Url.Action("ManageProjectAssignments", "Projects")" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Project Assignments</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="@Url.Action("Create", "Projects")" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
+                                    <i class="fas fa-book-open nav-icon"></i>
                                     <p>Create Project</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Projects")" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Active Projects</p>
+                                    <i class="fas fa-paper-plane nav-icon"></i>
+                                    <p>All Projects</p>
                                 </a>
                             </li>
 
@@ -122,64 +101,67 @@
                 }
 
                 <!-- Tickets dropdown nav list -->
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-ticket-alt"></i>
-                        <p>
-                            Tickets
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @if (User.IsInRole("Submitter"))
-                        {
-                            <li class="nav-item">
+                @if (User.IsInRole("Submitter"))
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="@Url.Action("Create", "Tickets")" class="nav-link">
+                            <i class="fas fa-ticket-alt nav-icon"></i>
+                            <p>Create New Ticket</p>
+                        </a>
+                    </li>
+                }
 
-                                <a href="@Url.Action("Create", "Tickets")" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>New Ticket</p>
-                                </a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-ticket-alt"></i>
+                            <p>
+                                Tickets
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
 
-                            </li>
-                        }
-                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                        {
                             <li class="nav-item">
                                 <a href="@Url.Action("Index", "Tickets")" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Active Tickets</p>
+                                    <p>All Tickets</p>
                                 </a>
                             </li>
-                        }
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "TicketHistories")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Ticket History</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index", "TicketNotifications")" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Ticket Notifications</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Log Out -->
-                @*@if (Request.IsAuthenticated)
-                    {
-                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <li class="nav-item">
-                                <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link bg-gradient-orange">
-                                    <i class="fas fa-door-open nav-icon text-white"></i>
-                                    <p class="text-white"> Log Out</p>
-                                </a>
-                            </li>
-                        }
-                    }*@
 
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "TicketHistories")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ticket History</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Index", "TicketNotifications")" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Ticket Notifications</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            <br />
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Log Out -->
+                @if (Request.IsAuthenticated)
+                {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <li class="nav-item has-treeview">
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link bg-gradient-orange">
+                                <i class="fas fa-door-open nav-icon text-white"></i>
+                                <p class="text-white"> Log Out</p>
+                            </a>
+                        </li>
+                    }
+                }
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -20,7 +20,7 @@
 </div>
 <!-- /.content-header -->
 @* Admin will get to see everything *@
-@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+@if (User.IsInRole("Admin"))
 {
     <!-- Main content -->
     <section class="content">
@@ -141,21 +141,17 @@
                 </div>
             </div>
             <!-- /.row -->
+            <!-- Project Table Row -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-orange text-white">
                             <h5 class="mx-3 mt-2 mb-0">All Projects</h5>
                             <p class="text-sm mx-sm-4">All Projects in the Database</p>
-                            @*<div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>*@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table class="table table-valign-middle border-bottom table-responsive">
+                            <table class="table table-valign-middle border-bottom">
                                 <thead class="table-head-fixed">
                                     <tr>
                                         <th>
@@ -189,7 +185,6 @@
                                                             </a>
                                                             <ul class="nav nav-treeview">
                                                                 <li class="nav-item">
-                                                                    @*@Html.ActionLink("Manage Members", "ManageProjectAssignments", new { id = item.Id }, new { @class = "nav-link" })*@
                                                                     @Html.ActionLink("Assign Users", "AssignUsers", "Projects", new { projectid = project.Id }, new { @class = "nav-link" })
                                                                 </li>
                                                                 <li class="nav-item">
@@ -215,11 +210,349 @@
                 </div>
                 <!-- /.row -->
             </div>
-
+            <!-- /.row -->
+            <!-- Ticket Table Row -->
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                            <h5 class="mx-3 mt-2 mb-0">All Tickets</h5>
+                            <p class="text-sm mx-sm-4">All Tickets in the Database</p>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-valign-middle border-bottom">
+                                <thead class="table-head-fixed">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayName("Title")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Description")
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ticket in Model.AllTickets)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => ticket.Title)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => ticket.Description)
+                                            </td>
+                                            <td>
+                                                <nav>
+                                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                                        <li class=" nav-item has-treeview">
+                                                            <a href="#" class="nav-link">
+                                                                <p>
+                                                                    More Options
+                                                                    <i class="fas fa-angle-down"></i>
+                                                                </p>
+                                                            </a>
+                                                            <ul class="nav nav-treeview">
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Edit", "Edit", "Tickets", new { id = ticket.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Ticket Dashboard", "Dashboard", "Tickets", new { id = ticket.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <!-- ./card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.row -->
         </div>
         <!--/. container-fluid -->
     </section>
     <!-- /.content -->
+}
+
+<!-- View for Manager -->
+@if (User.IsInRole("Manager"))
+{
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Projects</span>
+                            <span class="info-box-number">@Model.ProjectVM.ProjectCount</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-book-open"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Tickets</span>
+                            <span class="info-box-number">@Model.TicketCount</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-users"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Managers</span>
+                            <span class="info-box-number">@Model.ProjectVM.AllPMs.Count</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- fix for small devices only -->
+                <div class="clearfix hidden-md-up"></div>
+
+                <div class="col">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Developers</span>
+                            <span class="info-box-number">@Model.ProjectVM.AllDevs.Count</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+                <div class="col">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-orange elevation-1"><i class="fas fa-users text-white"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Submitters</span>
+                            <span class="info-box-number">@Model.ProjectVM.AllSubs.Count</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <div class="col">
+                    <!-- PIE CHART 1 -->
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                            <h5 class="mx-3 mt-2 mb-0">Tickets By Priority</h5>
+                            <p></p>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col">
+                    <!-- PIE CHART 2 -->
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                            <h5 class="mx-3 mt-2 mb-0">Tickets By Status</h5>
+                            <p></p>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col">
+                    <!-- PIE CHART 3 -->
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                            <h5 class="mx-3 mt-2 mb-0">Tickets By Type</h5>
+                            <p></p>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="pieChart3" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-orange text-white">
+                            <h4 class="card-header">My Projects</h4>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-valign-middle border-bottom">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayName("Project Name")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Description")
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MyProjects)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                <nav>
+                                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                                        <li class=" nav-item has-treeview">
+                                                            <a href="#" class="nav-link">
+                                                                <p>
+                                                                    More Options
+                                                                    <i class="fas fa-angle-down"></i>
+                                                                </p>
+                                                            </a>
+                                                            <ul class="nav nav-treeview">
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Assign Users", "AssignUsers", "Projects", new { projectid = item.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Project Details", "ProjectDetails", "Projects", new { id = item.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+                <!-- My Tickets -->
+                <!-- Everyone will need to have access to data tables -->
+                <!-- TABLE: TICKETS -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="mx-lg-2 mt-lg-n2 elevation-2 bg-gradient-navy text-white">
+                            <h4 class="card-header">My Tickets</h4>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-valign-middle border-bottom">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayName("Title")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Description")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Submitter")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Developer")
+                                        </th>
+                                        <th>
+                                            @Html.DisplayName("Project")
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.MyTickets)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Title)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Submitter.Email)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Developer.FullName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Project.Name)
+                                            </td>
+                                            <td>
+                                                <nav>
+                                                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                                                        <li class=" nav-item has-treeview">
+                                                            <a href="#" class="nav-link">
+                                                                <p>
+                                                                    More Options
+                                                                    <i class="fas fa-angle-down"></i>
+                                                                </p>
+                                                            </a>
+                                                            <ul class="nav nav-treeview">
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Edit", "Edit", "Tickets", new { id = item.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                                <li class="nav-item">
+                                                                    @Html.ActionLink("Ticket Dashboard", "Dashboard", "Tickets", new { id = item.Id }, new { @class = "nav-link" })
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </section>
+
+
 }
 
 @if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
@@ -287,7 +620,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table class="table table-valign-middle border-bottom table-responsive">
+                            <table class="table table-valign-middle border-bottom">
                                 <thead>
                                     <tr>
                                         <th>
@@ -313,26 +646,7 @@
                                             @if (User.IsInRole("Developer"))
                                             {
                                                 <td>
-                                                    <nav>
-                                                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                                            <li class=" nav-item has-treeview">
-                                                                <a href="#" class="nav-link">
-                                                                    <p>
-                                                                        More Options
-                                                                        <i class="fas fa-angle-down"></i>
-                                                                    </p>
-                                                                </a>
-                                                                <ul class="nav nav-treeview">
-                                                                    <li class="nav-item">
-                                                                        @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, new { @class = "nav-link" })
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        @Html.ActionLink("Project Details", "ProjectDetails", "Projects", new { id = item.Id }, new { @class = "nav-link" })
-                                                                    </li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
+                                                    @Html.ActionLink("Project Details", "ProjectDetails", "Projects", new { id = item.Id }, new { @class = "text-muted" })
                                                 </td>
                                             }
                                             @if (User.IsInRole("Submitter"))
@@ -362,7 +676,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table class="table table-valign-middle border-bottom table-responsive">
+                            <table class="table table-valign-middle border-bottom">
                                 <thead>
                                     <tr>
                                         <th>

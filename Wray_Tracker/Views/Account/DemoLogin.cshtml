@@ -68,41 +68,79 @@
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 @* Demo Admin *@
-                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class="mb-n4"}))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("emailKey", "DemoAdminEmail")
 
-                    <button type="submit" class=" btn bg-gradient-blue btn-block">Admin Log In</button>
+                    
+                        <button type="submit" class="btn btn-block">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-tie"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-number text-left">Admin</span>
+                                    <span class="info-box-text text-left text-sm">Control over everything</span>
+                                </div>
+                            </div>
+                        </button>
+                    
                 }
 
+
                 @* Demo PM *@
-                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "mb-n4" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("emailKey", "DemoPMEmail")
 
-                    <button type="submit" class=" btn bg-gradient-green btn-block">Project Manager Log In</button>
+                    <button type="submit" class="btn btn-block">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-gradient-success elevation-1"><i class="fas fa-user-secret"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number text-left">Project Manager</span>
+                                <span class="info-box-text text-left text-sm">Manages projects and users</span>
+                            </div>
+                        </div>
+                    </button>
                 }
 
                 @* Demo Dev *@
-                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "mb-n4" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("emailKey", "DemoDevEmail")
 
-                    <button type="submit" class=" btn btn-info btn-block bg-gradient-navy">Developer Log In</button>
+
+                    <button type="submit" class="btn btn-block">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-gradient-orange text-white elevation-1"><i class="fas fa-laptop-code"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number text-left">Developer</span>
+                                <span class="info-box-text text-left text-sm">Manages assigned tickets</span>
+                            </div>
+                        </div>
+                    </button>
+
                 }
 
                 @* Demo Sub *@
-                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, new { @class = "card-body" }))
+                @using (Html.BeginForm("DemoLoginAsync", "Account", FormMethod.Post, null))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("emailKey", "DemoSubEmail")
 
-                    <button type="submit" class=" btn btn-block bg-gradient-orange text-white">Submitter Log In</button>
-                }
 
+                    <button type="submit" class="btn btn-block">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-gradient-danger elevation-1"><i class="fas fa-headset"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-number text-left">Submitter</span>
+                                <span class="info-box-text text-left text-sm">Creates new tickets</span>
+                            </div>
+                        </div>
+                    </button>
+
+                }
                 <p class="mb-1">
                     <a href="@Url.Action("Login", "Account")" class="text-center">I already have a membership</a>
                 </p>

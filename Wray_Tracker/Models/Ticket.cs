@@ -48,6 +48,8 @@ namespace Wray_Tracker.Models
 
         public virtual ApplicationUser Developer { get; set; }
 
+        public virtual ApplicationUser Manager { get; set; }
+
         public virtual TicketStatus TicketStatus { get; set; }
 
         public virtual TicketPriority TicketPriority { get; set; }

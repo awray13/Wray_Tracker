@@ -13,14 +13,13 @@ namespace Wray_Tracker.ViewModels
 
         public ICollection<Project> AllProjects { get; set; }
 
-        public ICollection<Project> ProjectIds { get; set; }
         public ICollection<ApplicationUser> AllPMs { get; set; }
         public ICollection<ApplicationUser> AllDevs { get; set; }
         public ICollection<ApplicationUser> AllSubs { get; set; }
 
         public ProjectVM()
         {
-            ProjectIds = new List<Project>();
+            
             AllProjects = new List<Project>();
             AllPMs = new List<ApplicationUser>();
             AllDevs = new List<ApplicationUser>();

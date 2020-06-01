@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="mx-3 mt-n2 elevation-2 bg-gradient-navy text-white">
                         <h5 class="mx-3 mt-2 mb-0">Edit Ticket #@Model.Id</h5>
-                        <p class="text-sm mx-sm-4">@Html.ActionLink("Back to List", "Index", null, new { @class = "text-white"})</p>
+                        <p class="text-sm mx-sm-4">@Html.ActionLink("Back to List", "Index", null, new { @class = "text-white" })</p>
                     </div>
                     <div class="card-body">
                         @using (Html.BeginForm())
@@ -62,6 +62,14 @@
                                     <div class="col-md-10">
                                         @Html.DropDownList("TicketPriorityId", null, htmlAttributes: new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.TicketPriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TicketTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("TicketTypeId", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.TicketTypeId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
