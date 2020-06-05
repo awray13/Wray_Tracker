@@ -4,9 +4,7 @@
 @model Project
 
 @{
-    DashboardVM dashboardVM = new DashboardVM();
-    CustomUserData userData = new CustomUserData();
-    UserProjectHelper projectHelper = new UserProjectHelper();
+    
     UserRoleHelper roleHelper = new UserRoleHelper();
 
 }
@@ -78,7 +76,7 @@
                                                                             @Html.DisplayFor(model => item.Email)
                                                                         </td>
                                                                         <td>
-                                                                            @Html.DisplayFor(model => item.Roles)
+                                                                            @roleHelper.ListUserRoles(item.Id).FirstOrDefault()
                                                                         </td>
                                                                     </tr>
                                                                 }
@@ -108,6 +106,7 @@
                                                             <th>
                                                                 @Html.DisplayName("Developer")
                                                             </th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -122,6 +121,9 @@
                                                                 </td>
                                                                 <td>
                                                                     @Html.DisplayFor(model => item.Developer.FullName)
+                                                                </td>
+                                                                <td>
+                                                                    @Html.ActionLink("More Info", "Dashboard", "Tickets", new { id = item.Id}, new { @class = "text-muted"})
                                                                 </td>
                                                             </tr>
                                                         }

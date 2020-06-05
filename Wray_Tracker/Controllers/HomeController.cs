@@ -90,6 +90,7 @@ namespace Wray_Tracker.Controllers
         }
 
         // POST: User Profile
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(UserProfileVM model)
