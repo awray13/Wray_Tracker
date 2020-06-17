@@ -13,6 +13,7 @@ namespace Wray_Tracker
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Where my landing page is
             routes.MapRoute(
                 name: "Login Default",
                 url: "{controller}/{action}/{id}",

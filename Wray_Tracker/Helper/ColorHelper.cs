@@ -14,7 +14,7 @@ namespace Wray_Tracker.Helper
             switch (name)
             {
                 case "New":
-                    colorClass = "text-warning";
+                    colorClass = "text-maroon";
                     break;
                 case "Assigned":
                     colorClass = "text-primary";
@@ -50,7 +50,7 @@ namespace Wray_Tracker.Helper
                     userColorClass = "text-success";
                     break;
                 case "Submitter":
-                    userColorClass = "text-warning";
+                    userColorClass = "text-maroon";
                     break;
                 default:
                     userColorClass = "text-info";

@@ -555,10 +555,9 @@
 
 }
 
+<!--View for Submitter and Developer -->
 @if (User.IsInRole("Submitter") || User.IsInRole("Developer"))
 {
-    // Logged in user needs to be able to see Project and Ticket tables
-    // that they are currently assigned to.
 
     // My Projects
     <!-- Everyone will need to have access to data tables -->
