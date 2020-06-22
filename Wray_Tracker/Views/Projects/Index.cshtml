@@ -1,8 +1,8 @@
 ﻿@using Wray_Tracker.Models
 @model IEnumerable<Project>
 
-<section class="content">
-    <div class="container">
+<div class="content-header">
+    <div class="container-fluid">
         @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
         {
             <div class="row">
@@ -13,6 +13,11 @@
                 </div>
             </div>
         }
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
         <div class="row">
             <div class="col mt-4">
                 <div class="card">
