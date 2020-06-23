@@ -3,29 +3,44 @@
 
 @{ ColorHelper colorHelper = new ColorHelper(); }
 
+<div class="content-header">
+    <div class="container-fluid">
+
+    </div>
+</div>
 
 <section class="content">
     <div class="container-fluid">
-        <h2 class="text-muted">Manage User Roles</h2>
         <div class="row">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
+            <div class="col">
+                <div class="card">
+                    <div class="mx-3 mt-n2 elevation-2 bg-gradient-orange text-white">
+                        <h5 class="mx-3 mt-2 mb-0">Manage User Roles</h5>
+                        <p class="text-sm mx-sm-4"></p>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
 
-                @* Left column that holds the users *@
-                <div class="col">
-                    <span class="text-muted">Select 1 or more Users</span>
-                    @Html.ListBox("UserIds", null, new { @class = "custom-select multiple" })
-                    <hr />
-                    @* Right column for holding my Roles *@
-                    <span class="text-muted">Select the Role to Assign</span>
-                    @Html.DropDownList("RoleName", null, "-- Select Role --", new { @class = "custom-select multiple" })
-                    <br />
-                    <br />
-                    <button type="submit" class="btn btn-primary" style="">Manage Roles</button>
-                    <br />
+                            @* Left column that holds the users *@
+                            <div class="col">
+                                <span class="text-muted">Select 1 or more Users</span>
+                                @Html.ListBox("UserIds", null, new { @class = "custom-select multiple" })
+                                <hr />
+                                @* Right column for holding my Roles *@
+                                <span class="text-muted">Select the Role to Assign</span>
+                                @Html.DropDownList("RoleName", null, "-- Select Role --", new { @class = "custom-select multiple" })
+                                <br />
+                                <br />
+                                <button type="submit" class="btn bg-gradient-navy" style="">Manage Roles</button>
+                                <br />
+                            </div>
+                        }
+                    </div>
                 </div>
-            }
+            </div>
+
             <div class="col">
                 <div class="card">
                     <div class="mx-3 mt-n2 elevation-2 bg-gradient-navy">

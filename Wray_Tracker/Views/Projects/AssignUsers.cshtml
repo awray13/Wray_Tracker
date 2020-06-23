@@ -1,47 +1,56 @@
 ﻿@using Wray_Tracker.Models
 @model Project
 
+    <div class="content-header">
+        <div class="container-fluid">
+
+        </div>
+    </div>
 
 <section class="content">
-    <div class="container">
-        <div class="row card card-navy">
-            <div class="col">
-                <h2 class="card-header">Assign Users</h2>
-                @using (Html.BeginForm())
-                {
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-5">
+                <div class="card">
+                    <h2 class="card-header">Assign Users</h2>
+                    <div class="card-body">
+                        @using (Html.BeginForm())
+                        {
 
-                    @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
-                    @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
+                            @Html.Hidden("ProjectId", (int)ViewBag.ProjectId)
 
-                    if (User.IsInRole("Admin"))
-                    {
-                        <div class="row">
-                            <div class="col">
-                                <h4>Select Manager</h4>
-                                @Html.DropDownList("ManagerId", null, "-- Select Manager --", new { @class = "custom-select" })
+                            if (User.IsInRole("Admin"))
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Select Manager</h4>
+                                        @Html.DropDownList("ManagerId", null, "-- Select Manager --", new { @class = "custom-select" })
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>Select Submitters</h4>
+                                        @Html.ListBox("SubmitterIds", null, new { @class = "custom-select multiple" })
+                                    </div>
+                                    <div class="col">
+                                        <h4>Select Developers</h4>
+                                        @Html.ListBox("DeveloperIds", null, new { @class = "custom-select multiple" })
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" style="margin: 10px;" class="btn btn-info">Assign</button>
+                                </div>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="row">
-                            <div class="col">
-                                <h4>Select Submitters</h4>
-                                @Html.ListBox("SubmitterIds", null, new { @class = "custom-select multiple" })
-                            </div>
-                            <div class="col">
-                                <h4>Select Developers</h4>
-                                @Html.ListBox("DeveloperIds", null, new { @class = "custom-select multiple" })
-                            </div>
-                        </div>
-                    }
-                    <div class="row">
-                        <div class="col">
-                            <button type="submit" style="margin: 10px;" class="btn btn-info">Assign</button>
-                        </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
         </div>
 
